@@ -1,14 +1,53 @@
 ﻿# Pet-Connect
 
-Steps to set up project:
+ Pet Connect is a web-based pet adoption platform designed to streamline the adoption process for rescuers and potential adopters.
 
-1. Make sure you have JDK (java version: 21), Spring Boot, and Maven installed on your machines
-2. Clone repository: ```git clone https://github.com/BriLeighk/Pet-Connect.git```
-5. Install the dependencies (I’ve only added Spring Web, Thymeleaf, and Spring Boot DevTools for now but left space in the pom.xml file with comments to add MySQL Driver, Spring Boot Security, and Spring Boot Data JPA  for later). Once we implement the user authentication feature and the database, we can add most of those additional dependencies.
+## Project Description
+Pet Connect is a comprehensive platform that allows users to browse pet profiles, save favorites, and initiate the adoption process through a build-in messaging system. Rescuers can manage pet profiles, respond to inquiries, and more.
 
-You can use this command to add dependencies: ```mvn clean install```
+## Features
+- User authentication and authorization
+- Browse and filter pet profiles
+- Save favorite pets
+- Contact rescuers
+- Add, update, and manage pet profiles as a rescuer
+- View map of pet locations through Google Maps integration
 
-These are the commands to run the application:
--	If on linux (or using WSL on windows): ```./mvnw spring-boot:run```
--	If on Windows: ```mvnw.cmd spring-boot:run```
+## Technology Stack
+
+### Frontend
+- HTML, CSS
+- Thymeleaf
+
+### Backend
+- Java
+- Spring Boot
+- Spring Web
+- Spring Data JPA
+- Spring Security
+
+### Database
+- MySQL
+- Hibernate
+
+### Other Tools
+- Maven
+- BCrypt
+- Google Maps API
+
+## Setup and Installation
+
+### Prerequisites
+- JDK (Java Development Kit) 21
+- Spring Boot
+- Maven
+- MySQL
+- Git
+
+### Installation Steps
+1. Clone repository: ```git clone https://github.com/BriLeighk/Pet-Connect.git```
+2. Install the dependencies: ```mvn clean install```
+3. Run the application:
+    -	If on linux (or using WSL on windows): ```./mvnw spring-boot:run```
+    -	If on Windows: ```mvnw.cmd spring-boot:run```
 You can access the application (once it’s running) at this URL for the time being: ```http://localhost:8080```
