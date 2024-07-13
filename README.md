@@ -49,5 +49,5 @@ Pet Connect is a comprehensive platform that allows users to browse pet profiles
 2. Install the dependencies: ```mvn clean install```
 3. Run the application:
     -	If on linux (or using WSL on windows): ```./mvnw spring-boot:run```
-    -	If on Windows: ```mvnw.cmd spring-boot:run```
+    -	If on Windows: ```mvn spring-boot:run```
 You can access the application (once it’s running) at this URL for the time being: ```http://localhost:8080```
