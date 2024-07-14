@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+</head>
+<body>
+    <header> <!-- Navigation Bar -->
+        <!-- Add inbox icon -->
+        <i class='fas fa-comment-alt'></i>
+        <a href="/">Pet Connect</a> <!-- Home Navigation + App Name -->
+        
+        <div class="right-icons-container">
+            <!-- Add profile icon -->
+            <i class='fas fa-user-circle'></i>
+            <!-- Add favorites icon -->
+            <i class="fas fa-heart"></i>
+        </div>
+    </header>
+    <h1 th:text="${message}" id="home-title">Pet Connect</h1>
+
+    <div class="profiles"> <!-- Region for Pet Profile Tiles -->
+        <div class="search-profiles"> <!-- Search bar -->
+        </div>
+    </div>
+</body>
+
+<!-- create favorites modal (popup on main page on click of icon) -->
+</html>
