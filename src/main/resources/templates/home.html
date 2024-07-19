@@ -2,20 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/styles.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
 </head>
 <body>
     <header> <!-- Navigation Bar -->
-        <!-- Add inbox icon -->
-        <i class='fas fa-comment-alt'></i>
+        <i class='fas fa-comment-alt'></i> <!-- inbox icon -->
         <a href="/">Pet Connect</a> <!-- Home Navigation + App Name -->
-        
+    
         <div class="right-icons-container">
-            <!-- Add profile icon -->
-            <i class='fas fa-user-circle'></i>
-            <!-- Add favorites icon -->
-            <i class="fas fa-heart"></i>
+            <a href="">  <!-- Anchor so on-click of profile, navigates to login -->
+                <i class='fas fa-user-circle'></i> <!-- profile icon -->
+            </a>
+            
+            <i class="fas fa-heart"></i> <!-- favorites icon -->
         </div>
     </header>
     <h1 th:text="${message}" id="home-title">Pet Connect</h1>
@@ -25,6 +25,7 @@
         </div>
     </div>
 </body>
+
 
 <!-- create favorites modal (popup on main page on click of icon) -->
 </html>

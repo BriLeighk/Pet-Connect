@@ -1,30 +1,36 @@
 package edu.wisconsin.databaseclass.pet_connect.entities;
 
+
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
+import jakarta.persistence.*;
+
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int user_ID;
 
-    private Long userId;
     private String username;
     private String email;
     private String password;
+
     private String role;
-    private String rescuerId;
+
+    private Integer rescuerId;
+
     private LocalDateTime createdAt;
 
+    // other fields
 
-    private Set<Pet> favoritePets = new HashSet<>();
+    // getters and setters
 
-    // Getters and setters
-
-    public Long getUserId() {
-        return userId;
+    public int getUserId() {
+        return user_ID;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserId(int userId) {
+        this.user_ID = userId;
     }
 
     public String getUsername() {
@@ -43,43 +49,5 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getRescuerId() {
-        return rescuerId;
-    }
-
-    public void setRescuerId(String rescuerId) {
-        this.rescuerId = rescuerId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Set<Pet> getFavoritePets() {
-        return favoritePets;
-    }
-
-    public void setFavoritePets(Set<Pet> favoritePets) {
-        this.favoritePets = favoritePets;
-    }
+    // other getters and setters
 }

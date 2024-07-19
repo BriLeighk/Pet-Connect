@@ -12,5 +12,10 @@ public class HomeController {
         model.addAttribute("message", "Welcome to Pet Connect!");
         return "home";
     }
+
+    @GetMapping("/home")
+    public String homePage() {
+        return "home";
+    }
 }
 

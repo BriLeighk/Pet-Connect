@@ -1,19 +1,25 @@
 package edu.wisconsin.databaseclass.pet_connect.entities;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Location {
-    private Long locationId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int location_ID;
+
     private String state;
-    private double latitude;
     private double longitude;
+    private double latitude;
 
-    // Getters and setters
+    // getters and setters
 
-    public Long getLocationId() {
-        return locationId;
+    public int getLocationId() {
+        return location_ID;
     }
 
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
+    public void setLocationId(int locationId) {
+        this.location_ID = locationId;
     }
 
     public String getState() {
@@ -24,20 +30,21 @@ public class Location {
         this.state = state;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
     public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
 }
+
+
