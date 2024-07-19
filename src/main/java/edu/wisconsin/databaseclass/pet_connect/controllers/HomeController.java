@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
+    // controller that maps to the hope page
+
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("message", "Welcome to Pet Connect!");

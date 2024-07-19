@@ -1,10 +1,12 @@
 package edu.wisconsin.databaseclass.pet_connect.entities;
 
-
 import jakarta.persistence.*;
 import java.util.Date;
 
+
+// Entity for the Favorites relationship between User and Pet
 @Entity
+@Table(name = "favorites")
 public class Favorites {
     @EmbeddedId
     private FavoritesId id;

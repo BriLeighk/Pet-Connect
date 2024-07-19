@@ -3,25 +3,32 @@ package edu.wisconsin.databaseclass.pet_connect.entities;
 import jakarta.persistence.*;
 import java.util.Date;
 
+// Entity for Message
 @Entity
+@Table(name = "message")
 public class Message {
+
+    // mark message_ID as the Identifier
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int message_ID;
 
     @ManyToOne
-    @JoinColumn(name = "sender_ID")
+    @JoinColumn(name = "sender_ID", nullable = false)
     private User sender;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_ID")
+    @JoinColumn(name = "receiver_ID", nullable = false)
     private User receiver;
 
     @ManyToOne
-    @JoinColumn(name = "pet_ID")
+    @JoinColumn(name = "pet_ID", nullable = false)
     private Pet pet;
 
+    @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false)
     private Date sent_at;
 
     // getters and setters

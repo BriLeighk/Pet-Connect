@@ -16,6 +16,7 @@ public class PetController {
     @Autowired
     private PetService petService;
 
+    // maps to pets --- may need modification
     @GetMapping("/pets")
     public String getAllPets(Model model) {
         model.addAttribute("pets", petService.getAllPets());

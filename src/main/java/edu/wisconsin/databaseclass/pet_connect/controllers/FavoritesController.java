@@ -18,17 +18,18 @@ import edu.wisconsin.databaseclass.pet_connect.services.UserService;
 import java.util.Date;
 
 @Controller
-public class FavoritesController {
+public class FavoritesController { // Controller for Favorites relationship set
 
     @Autowired
-    private FavoritesService favoritesService;
+    private FavoritesService favoritesService; // access to favorites service file
 
     @Autowired
-    private UserService userService;
+    private UserService userService; // access to user service file
 
     @Autowired
-    private PetService petService;
+    private PetService petService; // access to pet service file
 
+    // boilerplate code --- may need modification once we integrate pet profiles feature
     @GetMapping("/favorites")
     public String getAllFavorites(Model model) {
         model.addAttribute("favorites", favoritesService.getAllFavorites());

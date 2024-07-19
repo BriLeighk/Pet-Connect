@@ -19,11 +19,13 @@ public class UserController {
     
     private UserService userService;
 
+    // maps to the login modal/page (soon-to-be implemented)
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
+    // maps to register/create-account modal/page (soon-to-be implemented)
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("user", new User());
@@ -35,7 +37,8 @@ public class UserController {
         userService.saveUser(user);
         return "redirect:/login";
     }
-    //other endpoints go here
+
+    // access to users (mapping --- may need modification)
     @GetMapping("/users")
     public String getAllUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());

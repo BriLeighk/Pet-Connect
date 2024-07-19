@@ -12,6 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // Removes Spring Security restriction to give public access to front page, while
+    // keeping auth requirements for login
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

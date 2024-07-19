@@ -2,7 +2,9 @@ package edu.wisconsin.databaseclass.pet_connect.entities;
 
 import jakarta.persistence.*;
 
+// Entity for the Messages Relationshp set between User and Message (User messages User)
 @Entity
+@Table(name = "messages")
 public class Messages {
     @EmbeddedId
     private MessagesId id;

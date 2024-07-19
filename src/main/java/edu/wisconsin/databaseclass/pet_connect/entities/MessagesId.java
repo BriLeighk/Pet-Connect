@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import jakarta.persistence.Embeddable;
 
-
+// Model to represent composite key relation for the Messages relationship set between User and Message Entities
 @Embeddable
 public class MessagesId implements Serializable {
     private int userId;

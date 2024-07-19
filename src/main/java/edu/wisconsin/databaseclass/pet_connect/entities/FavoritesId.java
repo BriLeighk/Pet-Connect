@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 import jakarta.persistence.Embeddable;
 
+
+// FavoritesID model to represent the composite key between User and Pet entities
 @Embeddable
 public class FavoritesId implements Serializable {
     private int userId;

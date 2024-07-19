@@ -16,6 +16,7 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
 
+    // controller that maps to the locations page once implemented (boiler-plate --- may need modification)
     @GetMapping("/locations")
     public String getAllLocations(Model model) {
         model.addAttribute("locations", locationService.getAllLocations());

@@ -18,18 +18,23 @@ import edu.wisconsin.databaseclass.pet_connect.services.MessageService;
 import edu.wisconsin.databaseclass.pet_connect.services.MessagesService;
 import edu.wisconsin.databaseclass.pet_connect.services.UserService;
 
+/*
+ * Controller for the Message entity and Messages relationship set
+ */
 @Controller
 public class CombinedMessagesController {
 
     @Autowired
-    private MessagesService messagesService;
+    private MessagesService messagesService; // initialize messagesService (messages relationship set service file)
 
     @Autowired
-    private UserService userService;
+    private UserService userService; // init userService
 
     @Autowired
-    private MessageService messageService;
+    private MessageService messageService; // init messageService (message Entity service file)
 
+
+    // boilerplate code -- may need modification once message relationship is set up
     @GetMapping("/messages")
     public String getAllMessages(Model model) {
         model.addAttribute("messages", messageService.getAllMessages());
@@ -42,7 +47,7 @@ public class CombinedMessagesController {
         Message message = new Message();
         message.setSender(userService.getUserById(senderId));
         message.setReceiver(userService.getUserById(receiverId));
-        message.setPet(new Pet()); // Assuming you have a method to set Pet
+        message.setPet(new Pet()); 
         message.setContent(content);
         message.setSentAt(new Date());
         messageService.saveMessage(message);

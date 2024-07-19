@@ -2,14 +2,22 @@ package edu.wisconsin.databaseclass.pet_connect.entities;
 
 import jakarta.persistence.*;
 
+// Entity for Location
 @Entity
+@Table(name = "location")
 public class Location {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int location_ID;
 
+    @Column(nullable = false)
     private String state;
+
+    @Column(nullable = false)
     private double longitude;
+
+    @Column(nullable = false)
     private double latitude;
 
     // getters and setters
