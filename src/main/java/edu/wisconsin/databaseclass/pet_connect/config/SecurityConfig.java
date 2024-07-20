@@ -18,7 +18,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/home", "/", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/home", "/", "/css/**", "/register", "/static/**", "/favicon.png").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin((form) -> form
@@ -35,5 +35,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     
 }

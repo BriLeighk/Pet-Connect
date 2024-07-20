@@ -1,52 +1,34 @@
-/* WEBSITE STYLING */
+/* WEBSITE HOMEPAGE STYLING */
 
 /* Home Page Body Structure */
 body {
+    font-family: 'Poppins', sans-serif;
     text-align: center;
-    background-color: #aaa89e82;
+    background-color: #e6ccb2;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='96' viewBox='0 0 60 96'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23b08968' fill-opacity='0.4'%3E%3Cpath d='M36 10a6 6 0 0 1 12 0v12a6 6 0 0 1-6 6 6 6 0 0 0-6 6 6 6 0 0 1-12 0 6 6 0 0 0-6-6 6 6 0 0 1-6-6V10a6 6 0 1 1 12 0 6 6 0 0 0 12 0zm24 78a6 6 0 0 1-6-6 6 6 0 0 0-6-6 6 6 0 0 1-6-6V58a6 6 0 1 1 12 0 6 6 0 0 0 6 6v24zM0 88V64a6 6 0 0 0 6-6 6 6 0 0 1 12 0v12a6 6 0 0 1-6 6 6 6 0 0 0-6 6 6 6 0 0 1-6 6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     margin: 0;
     padding: 0;
+    color: #fff;
 }
 
-/* Main Header */
-header {
-    display: flex;
-    padding: 2rem;
-    background-color: #80796382;
-    justify-content: space-between;
-    align-items: center;
-}
-
-header a {
-    font-weight: bold;
-    font-size: 18px;
-    text-decoration: none;
-    color: #333;
-}
-
-#home-title {
-    margin-top: 5rem;
-}
-
-header i {
-    padding: 1rem;
-    font-size: 20px;
-}
-
-.fas.fa-comment-alt {
-    padding-right: 71.38px;
+.container {
+    max-width: 1000px; /* scales with viewport width */
+    padding: 0 20px;
+    margin: 80px auto;
 }
 
 /* Pet profile section */
 .profiles {
-    min-height: 50vw; /* Change to fit to the view port width */
-    margin: 4vw;
-    background-color: #80796382
+    width: 100%;
+    height: 500px;
+    background: #ede0d4;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.1);
 }
 
 /* Search bar in pet-profile section */
 .search-profiles {
-    background-color: #79766c82;
+    background-color: #b08968;
     padding: 2rem;
 }
 

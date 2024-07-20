@@ -1,0 +1,37 @@
+<!-- Header fragment -->
+ <div th:fragment="header">
+    <header> <!-- Navigation Bar -->
+        <i class='fas fa-comment-alt'></i> <!-- inbox icon -->
+        <a href="/home">Pet Connect</a> <!-- Home Navigation + App Name -->
+    
+        <div class="right-icons-container">
+            <a href="/login">  <!-- Anchor so on-click of profile, navigates to login -->
+                <i class='fas fa-user-circle'></i> <!-- profile icon -->
+            </a>
+            
+            <i class="fas fa-heart"></i> <!-- favorites icon -->
+        </div>
+    </header>
+ </div>
+
+<script>
+    function hideHeader() {
+        document.querySelector('header').classList.add('hidden');
+    }
+
+    function showHeader() {
+        document.querySelector('header').classList.remove('hidden');
+    }
+
+    // handle navigation with smooth transitions
+    function navigateTo(url, withHeader) {
+        if (withHeader) {
+            showHeader();
+        } else {
+            hideHeader();
+        }
+        setTimeout(() => {
+            window.location.href = url;
+        }, 1000);
+    }
+</script>
