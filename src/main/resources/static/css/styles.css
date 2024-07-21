@@ -30,7 +30,33 @@ body {
 /* Search bar formatting for pet-profile section */
 .search-profiles {
     background-color: #b08968;
-    padding: 2rem;
+    padding: 1rem;
+}
+
+/* puts search profiles bar on the left hand side of the pet profile navigation bar */
+form {
+    display: flex;
+    justify-content: right;
+    gap: 5px; /* slight space between search bar and search icon */
+}
+
+input {
+    height: 24px;
+    border: none;
+    background: #ede0d4;
+    border-radius: 4px; /* slightly rounds corners */
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 3px #9c6644;
+
+}
+button {
+    background: none;
+    border: none;
+    font-size: 25px;
+    color: #fff;
 }
 
 

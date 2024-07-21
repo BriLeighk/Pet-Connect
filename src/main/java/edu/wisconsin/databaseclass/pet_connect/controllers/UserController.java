@@ -23,10 +23,16 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
-    @GetMapping("/register")
+    @GetMapping("/register") //mapping to register page
     public String showRegistrationForm() {
         return "register";
     }
+
+    @GetMapping("/login") // mapping to login page
+    public String loginRegistrationForm() {
+        return "login";
+    }
+
 
     @PostMapping("/register") // contents of user registration
     public String registerUser(@RequestParam("username") String username,
