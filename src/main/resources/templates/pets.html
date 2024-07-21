@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Filter</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    </head>
+    <body>
+        <header> <!-- Navigation Bar -->
+            <i class='fas fa-comment-alt'></i> <!-- inbox icon -->
+            <a href="/">Filter</a> <!-- Home Navigation + App Name -->
+            
+            <div class="right-icons-container">
+                <a href="">  <!-- Anchor so on-click of profile, navigates to login -->
+                    <i class='fas fa-user-circle'></i> <!-- profile icon -->
+                </a>
+                    
+                <i class="fas fa-heart"></i> <!-- favorites icon -->
+            </div>
+        </header>
+        <div th:if="${not#lists.isEmpty(pets)}"> <!-- show filter table if not empty -->
+            <input type="text" id="searchInput" placeholder="Search"> <!-- intended to be a search bar by which to filter the table-->
+            <table>
+                <thead>
+                    <tr> <!-- pet attributes -->
+                        <th>petID</h2>
+                        <th>name</h2>
+                        <th>breed</h2>
+                        <th>type</h2>
+                        <th">age</h2>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pet : ${pets}"> <!-- pet attributes, intended to link with backend-->
+                        <td th.text="${pet.petID}"></td>
+                        <td th.text="${pet.name}"></td>
+                        <td th.text="${pet.breed}"></td>
+                        <td th.text="${pet.type}"></td>
+                        <td th.text="${pet.age}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <span id="noMatch" style="display:none;">
+                No items match your search
+            </span>
+        </div>
+    </body>
+</html>
