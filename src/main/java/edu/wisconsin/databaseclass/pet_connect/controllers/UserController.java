@@ -1,57 +1,72 @@
 package edu.wisconsin.databaseclass.pet_connect.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-
 import edu.wisconsin.databaseclass.pet_connect.entities.User;
 import edu.wisconsin.databaseclass.pet_connect.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import java.util.logging.Logger;
 
 @Controller
 public class UserController {
+    private static final Logger logger = Logger.getLogger(UserController.class.getName());
 
     @Autowired
+    private UserService userService; // access to userService where CRUD operation calls are performed
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
-    private UserService userService;
-
-    // maps to the login modal/page (soon-to-be implemented)
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
-    // maps to register/create-account modal/page (soon-to-be implemented)
-    @GetMapping("/register")
-    public String register(Model model) {
-        model.addAttribute("user", new User());
+    @GetMapping("/register") //mapping to register page
+    public String showRegistrationForm() {
         return "register";
     }
 
-    @PostMapping("/register")
-    public String registerUser(User user) {
-        userService.saveUser(user);
-        return "redirect:/login";
+    @GetMapping("/login") // mapping to login page
+    public String loginRegistrationForm() {
+        return "login";
     }
 
-    // access to users (mapping --- may need modification)
-    @GetMapping("/users")
-    public String getAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "users";
-    }
 
-    @PostMapping("/user")
-    public String saveUser(@RequestParam("username") String username, @RequestParam("email") String email) {
+    @PostMapping("/register") // contents of user registration
+    public String registerUser(@RequestParam("username") String username,
+                               @RequestParam("email") String email,
+                               @RequestParam("password") String password) {
+        logger.info("Registering user: " + email);
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
-        userService.saveUser(user);
-        return "redirect:/users";
+        userService.saveUser(user, password); // call to save user in database (pass raw password to hash in Service file)
+        logger.info("User registered successfully: " + email);
+        return "redirect:/login"; // navigates user to login page on successful account creation
     }
-    
+
+    @PostMapping("/perform_login") // checks if validity of user login credentials (if record exists in database and if passwords match)
+    public String loginUser(@RequestParam("email") String email,
+                            @RequestParam("password") String password,
+                            HttpSession session,
+                            Model model) {
+        User user = userService.findByEmail(email);
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            return "redirect:/home"; // redirects user to homepage on successful login attempt
+        } else {
+            // on-screen error message on invalid login credentials
+            model.addAttribute("errorMessage", "Invalid email or password. Please try again.");
+            return "login";
+        }
+    }
+
+    @GetMapping("/logout") // TODO: implement logout handling
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login?logout=true";
+    }
+
+
 }

@@ -1,15 +1,12 @@
 package edu.wisconsin.databaseclass.pet_connect.entities;
 
-
 import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user")
 public class User {
 
-    // marked with ID and GeneratedValue as an identifier
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int user_ID;
@@ -24,14 +21,18 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String role;
+    private String role = "USER"; // default role
 
-    // not all users are rescuers so it is nullable, but each rescuerId is unique to the rescuer
     @Column(nullable = true, unique = true) 
     private Integer rescuerId;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist // stores current date/time in database on creation of user record
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
     // getters and setters
 
@@ -59,5 +60,35 @@ public class User {
         this.email = email;
     }
 
-    // other getters and setters
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Integer getRescuerId() {
+        return rescuerId;
+    }
+
+    public void setRescuerId(Integer rescuerId) {
+        this.rescuerId = rescuerId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

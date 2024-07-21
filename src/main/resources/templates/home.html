@@ -3,37 +3,28 @@
 <!-- HOMEPAGE STRUCTURE -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home</title>
+    <title>Homepage</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel="icon" type="image/png" th:href="@{/favicon.png}">
+
 </head>
 <body>
-    <header> <!-- Navigation Bar -->
-        <i class='fas fa-comment-alt'></i> <!-- inbox icon -->
-        <a href="/">Pet Connect</a> <!-- Home Navigation + App Name -->
+    <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
     
-        <div class="right-icons-container">
-            <a href="">  <!-- Anchor so on-click of profile, navigates to login -->
-                <i class='fas fa-user-circle'></i> <!-- profile icon -->
-            </a>
-            
-            <i class="fas fa-heart"></i> <!-- favorites icon -->
-        </div>
-    </header>
-    <h1 th:text="${message}" id="home-title">Pet Connect</h1>
-
-    <div class="profiles"> <!-- Region for Pet Profile Tiles -->
-        <div class="search-profiles"> <!-- Search bar -->
-            <form action="#"> <!-- implemented Search bar -->
-                <input type="text" placeholder="Search Profiles" name="search">
-                <button>
-                    <i class="fa fa-search"></i>
-                </button>
-            </form>
+    <div class="container">
+        <div class="profiles"> <!-- Region for Pet Profile Tiles -->
+            <div class="search-profiles"> <!-- Search bar -->
+                <form action="#"> <!-- implemented Search bar -->
+                    <input type="text" placeholder="Search Profiles" name="search">
+                    <button>
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </body>
-
-
-<!-- create favorites modal (popup on main page on click of icon) -->
+<!-- TODO: create favorites modal (popup on main page on click of icon) -->
 </html>

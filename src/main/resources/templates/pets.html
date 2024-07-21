@@ -5,18 +5,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
     </head>
     <body>
-        <header> <!-- Navigation Bar -->
-            <i class='fas fa-comment-alt'></i> <!-- inbox icon -->
-            <a href="/">Filter</a> <!-- Home Navigation + App Name -->
-            
-            <div class="right-icons-container">
-                <a href="">  <!-- Anchor so on-click of profile, navigates to login -->
-                    <i class='fas fa-user-circle'></i> <!-- profile icon -->
-                </a>
-                    
-                <i class="fas fa-heart"></i> <!-- favorites icon -->
-            </div>
-        </header>
+        <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
+        
         <div th:if="${not#lists.isEmpty(pets)}"> <!-- show filter table if not empty -->
             <input type="text" id="searchInput" placeholder="Search"> <!-- intended to be a search bar by which to filter the table-->
             <table>
