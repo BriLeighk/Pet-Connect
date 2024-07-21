@@ -1,4 +1,5 @@
-<!-- Header fragment -->
+<!-- Main Header Fragment --- Styled in layout.css -->
+
  <div th:fragment="header">
     <header> <!-- Navigation Bar -->
         <i class='fas fa-comment-alt'></i> <!-- inbox icon -->
@@ -13,25 +14,3 @@
         </div>
     </header>
  </div>
-
-<script>
-    function hideHeader() {
-        document.querySelector('header').classList.add('hidden');
-    }
-
-    function showHeader() {
-        document.querySelector('header').classList.remove('hidden');
-    }
-
-    // handle navigation with smooth transitions
-    function navigateTo(url, withHeader) {
-        if (withHeader) {
-            showHeader();
-        } else {
-            hideHeader();
-        }
-        setTimeout(() => {
-            window.location.href = url;
-        }, 1000);
-    }
-</script>

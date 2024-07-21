@@ -3,7 +3,7 @@
 <!-- HOMEPAGE STRUCTURE -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home</title>
+    <title>Homepage</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
@@ -11,7 +11,7 @@
 
 </head>
 <body>
-    <div th:insert="fragments/header :: header"></div>
+    <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
     
     <div class="container">
         <div class="profiles"> <!-- Region for Pet Profile Tiles -->
@@ -20,5 +20,5 @@
         </div>
     </div>
 </body>
-<!-- create favorites modal (popup on main page on click of icon) -->
+<!-- TODO: create favorites modal (popup on main page on click of icon) -->
 </html>

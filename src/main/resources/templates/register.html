@@ -2,7 +2,7 @@
 <!-- REGISTER STRUCTURE -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Login</title>
+    <title>Create Account</title>
     <link rel="stylesheet" type="text/css" href="/css/login.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
@@ -10,22 +10,22 @@
 
 </head>
 <body>
-    <h1><a href="/">Pet Connect</a></h1>
+    <h1><a href="/">Pet Connect</a></h1> <!-- links to homepage -->
     <div class="container">
         <div class="wrapper">
             <div class="title"><span>Create Account</span></div>
-            <form action="#">
+            <form action="#" th:action="@{/register}" method="post"> <!-- thymeleaf register action + CRUD method -->
                 <div class="row">
                     <i class="fas fa-font"></i>
-                    <input type="text" placeholder="Username" required> <!-- user must enter email -->
+                    <input type="text" name="username" placeholder="Username" required> <!-- user must enter email -->
                 </div>
                 <div class="row">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Email" required> <!-- user must enter email -->
+                    <input type="text" name="email" placeholder="Email" required> <!-- user must enter email -->
                 </div>
                 <div class="row">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="password" required> <!-- user must enter password -->
+                    <input type="password" name="password" placeholder="password" required> <!-- user must enter password -->
                 </div>
                 
                 <div class="row button">
