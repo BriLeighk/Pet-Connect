@@ -5,4 +5,3 @@ import edu.wisconsin.databaseclass.pet_connect.entities.Location;
 
 public interface LocationRepository extends JpaRepository<Location, Integer> {
 }
-

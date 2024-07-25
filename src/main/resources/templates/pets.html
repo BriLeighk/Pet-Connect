@@ -2,11 +2,13 @@
     <head>
         <title>Filter</title>
         <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+        <link rel="icon" type="image/png" th:href="@{/favicon.png}">
     </head>
     <body>
         <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
-        
+
         <div th:if="${not#lists.isEmpty(pets)}"> <!-- show filter table if not empty -->
             <input type="text" id="searchInput" placeholder="Search"> <!-- intended to be a search bar by which to filter the table-->
             <table>

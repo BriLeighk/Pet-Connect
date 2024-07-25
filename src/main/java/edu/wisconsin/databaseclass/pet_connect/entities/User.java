@@ -29,6 +29,10 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Lob
+    @Column(name = "profile_image", columnDefinition = "LONGBLOB")
+    private byte[] profileImage;
+
     @PrePersist // stores current date/time in database on creation of user record
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -90,5 +94,13 @@ public class User {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public byte[] getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
     }
 }

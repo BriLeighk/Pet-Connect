@@ -47,4 +47,3 @@ public class MessagesId implements Serializable {
     }
 }
 
-

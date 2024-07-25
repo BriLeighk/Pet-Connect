@@ -34,4 +34,3 @@ public class LocationController {
         return "redirect:/locations";
     }
 }
-

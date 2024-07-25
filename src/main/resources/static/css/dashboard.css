@@ -1,1 +1,183 @@
 /* TODO --- USER DASHBOARD STYLING */
+
+h1 {
+    color: #60402b;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* New CSS for dashboard.html */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+.profile-card {
+    background-color: #ede0d4;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 400px;
+    position: relative; /* Add this to position the clear button relative to the profile card */
+}
+
+.profile-card img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.clear-profile-button {
+    position: absolute;
+    top: 105px; /* Adjust this value to position the button right under the image */
+    right: calc(50% - 53px); /* Adjust this value to position the button to the right of the image */
+    background-color: #b08968;
+    border: none;
+    border-radius: 50%;
+    color: #ede0d4;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    transition: background-color 0.6s ease-in-out;
+}
+
+.clear-profile-button:hover {
+    background-color: #917055;
+    transition: background-color 0.6s ease-in-out;
+}
+
+.profile-card h2 {
+    color: #7f5539;
+    margin: 10px 0 2px 0; /* Adjusted value to reduce the space below the username */
+}
+
+.profile-card p {
+    color: #bb997d;
+    font-size: 14px;
+    margin-top: 2px; /* Adjusted value to reduce the space above the email */
+    margin-bottom: 30px; /* Added value to increase the space below the email */
+}
+
+#editButton {
+    background-color: #b08968;
+    border-radius: 4px;
+    border: none;
+    padding: 3px 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #ede0d4;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: background-color 0.3s ease-in-out;
+}
+
+#editButton:hover {
+    transition: background-color 0.3s ease-in-out;
+    background-color: #917055;
+    color: #ede0d4;
+}
+
+form {
+    display: flex;
+    flex-direction: column; /* Change to column to stack divs vertically */
+    gap: 3px; /* Add gap between divs */
+    align-items: center;
+}
+
+form div {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center; /* Align items vertically */
+    justify-content: center;
+}
+
+form label {
+    width: 100px; /* Set a fixed width for labels */
+    text-align: left; /* Align text to the right */
+    margin-right: 10px; /* Add some space between label and input */
+    white-space: nowrap; /* Prevent labels from wrapping */
+    color: #b08968; /* Change label text color */
+}
+
+form input[type="text"] {
+    width: 200px; /* Set a fixed width for text input */
+    color: #ede0d4;
+    background-color: #bb997d;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 5px; /* Add some padding for better appearance */
+    transition: b0x-shadow 0.6s ease-in-out;
+}
+
+form input[type="text"]:focus {
+    outline: none;
+    box-shadow: inset 0 0 15px #b08968; /* Add inner shadow for highlight */
+    transition: box-shadow 0.6s ease-in-out;
+}
+
+form input[type="text"]:hover {
+    outline: none;
+    box-shadow: inset 0 0 20px #b08968; /* Add inner shadow for highlight */
+    transition: box-shadow 0.6s ease-in-out;
+}
+
+.custom-file-button {
+    width: 210px; /* Set the same fixed width for the custom file button */
+    background-color: #bb997d;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 10px;
+    color: #ede0d4;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align content to the left */
+    transition: background-color 0.6s ease-in-out;
+    gap: 5px;
+}
+
+.custom-file-button i {
+    font-size: 12px;
+}
+
+.custom-file-button:hover {
+    transition: background-color 0.6s ease-in-out;
+    background-color: #b08968;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 10px;
+    color: #ede0d4;
+    cursor: pointer;
+    transition: background-color 0.6s ease-in-out;
+}
+
+.save-changes-button {
+    margin-left: 0; /* Shift the button to the left */
+    background-color: #bb997d;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    color: #ede0d4;
+    cursor: pointer;
+    transition: background-color 0.6s ease-in-out;
+    width: 360px;
+    margin-top: 15px;
+}
+
+.save-changes-button:hover {
+    background-color: #b08968;
+    transition: background-color 0.6s ease-in-out;
+}

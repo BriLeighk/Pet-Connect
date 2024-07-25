@@ -35,4 +35,3 @@ public class PetController {
         return "redirect:/pets";
     }
 }
-
