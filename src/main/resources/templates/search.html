@@ -10,12 +10,14 @@
     <!-- this is intended to be a search form, though I'm not sure if I did it right -->
     <form th:action="@{/pets/{id}}" th.object="${pets}" method="get">
         <p>Id: <input type="number" th:field="*/{id}" /></p>
-        <p><input type="submit" value="Search" /><input type="reset" value="Reset"></p>
+        <p>Name <input type="text" th:field="*/name" /></p>
+        <p><input type="submit" value="Search" /><input type="reset" value="Reset" /></p>
     </form>
     <table>
         <thead>
             <tr>
-                <!-- note to revisit this to get the headings in proper order and stuff -->
+                <!-- TODO: to revisit this to get the headings in proper order and stuff -->
+                <!-- also I'm not sure whether this checks all fields or just ID and name -->
                 <th>ID</th>
                 <th>Name</th>
                 <th>Type</th>
@@ -41,7 +43,4 @@
             </tr>
         </tbody>
     </table>
-    <h2>Filter Pet Profiles</h2>
-    <!-- this is intended to be a filter table, though I'm not sure if I did it right -->
-
 </body>

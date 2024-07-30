@@ -30,8 +30,10 @@ public class PetController {
         model.addAttribute("pets", petService.getPetById(id));
         return "pets";
     }
-
-    @PostMapping("/pet")
+    
+    // create and save pet
+    // note: changed this to be "/savepet"
+    @PostMapping("/savepet")
     public String savePet(@RequestParam("name") String name, @RequestParam("breed") String breed,
                           @RequestParam("type") String type, @RequestParam("age") int age) {
         Pet pet = new Pet();
