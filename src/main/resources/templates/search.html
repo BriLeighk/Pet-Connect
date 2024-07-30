@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<!-- CREATE-SEARCH STRUCTURE TO-BE-IMPLEMENTED -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search</title>
+</head>
+<body>
+    <h2>Search By Pet Name or ID</h2>
+    <!-- this is intended to be a search form, though I'm not sure if I did it right -->
+    <form th:action="@{/pets/{id}}" th.object="${pets}" method="get">
+        <p>Id: <input type="number" th:field="*/{id}" /></p>
+        <p><input type="submit" value="Search" /><input type="reset" value="Reset"></p>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <!-- note to revisit this to get the headings in proper order and stuff -->
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Breed</th>
+                <th>Health Status</th>
+                <th>Vaccination Status</th>
+                <th>Sterilized</th>
+                <th>Dewormed</th>
+                <th>Adoption Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="p : ${pets}" th:field="${p}">
+                <td th:text="${p.ID}"></td>
+                <td th:text="${p.Name}"></td>
+                <td th:text="${p.Type}"></td>
+                <td th:text="${p.Breed}"></td>
+                <td th:text="${p.Health}"></td>
+                <td th:text="${p.Vaccination}"></td>
+                <td th:text="${p.Sterilized}"></td>
+                <td th:text="${p.Dewormed}"></td>
+                <td th:text="${p.Adoption}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>Filter Pet Profiles</h2>
+    <!-- this is intended to be a filter table, though I'm not sure if I did it right -->
+
+</body>

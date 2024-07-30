@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,6 +21,13 @@ public class PetController {
     @GetMapping("/pets")
     public String getAllPets(Model model) {
         model.addAttribute("pets", petService.getAllPets());
+        return "pets";
+    }
+
+    //search for pets by ID
+    @GetMapping("/pets/{id}")
+    public String searchPets(Model model, @PathVariable int id) {
+        model.addAttribute("pets", petService.getPetById(id));
         return "pets";
     }
 
