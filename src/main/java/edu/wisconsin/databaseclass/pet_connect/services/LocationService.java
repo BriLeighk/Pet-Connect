@@ -30,4 +30,3 @@ public class LocationService {
         locationRepository.deleteById(locationId);
     }
 }
-

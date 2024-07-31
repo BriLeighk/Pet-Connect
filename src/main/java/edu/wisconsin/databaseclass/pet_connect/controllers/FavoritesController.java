@@ -56,4 +56,3 @@ public class FavoritesController { // Controller for Favorites relationship set
 
 
 
-

@@ -8,7 +8,6 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
     <link rel="icon" type="image/png" th:href="@{/favicon.png}">
-
 </head>
 <body>
     <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
@@ -22,6 +21,15 @@
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
+            </div>
+            <div class="pet-cards">
+                <div th:each="pet : ${pets}" class="pet-card">
+                    <h3 th:text="${pet.name}">Pet Name</h3>
+                    <p th:text="'Breed: ' + ${pet.breed}">Breed</p>
+                    <p th:text="'Type: ' + ${pet.type}">Type</p>
+                    <p th:text="'Age: ' + ${pet.age} + ' years'">Age</p>
+                    <!-- Add more pet details as needed -->
+                </div>
             </div>
         </div>
     </div>

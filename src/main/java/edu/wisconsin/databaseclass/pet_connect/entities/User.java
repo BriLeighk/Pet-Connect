@@ -7,27 +7,31 @@ import jakarta.persistence.*;
 @Table(name = "user")
 public class User {
 
-    @Id
+    @Id // denote as PK
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int user_ID;
+    private int user_ID; // type INT
 
-    @Column(nullable = false)
-    private String username;
+    @Column(nullable = false) // Not null
+    private String username; // type varchar(255)
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true) // can uniquely identify user
     private String email;
 
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
-    private String role = "USER"; // default role
-
-    @Column(nullable = true, unique = true) 
-    private Integer rescuerId;
+    private String role;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @Lob // indicate as long blob type
+    @Column(name = "profile_image", columnDefinition = "LONGBLOB")
+    private byte[] profileImage;
+
+    @OneToOne(mappedBy = "user")
+    private Rescuer rescuer;
 
     @PrePersist // stores current date/time in database on creation of user record
     protected void onCreate() {
@@ -76,19 +80,27 @@ public class User {
         this.role = role;
     }
 
-    public Integer getRescuerId() {
-        return rescuerId;
-    }
-
-    public void setRescuerId(Integer rescuerId) {
-        this.rescuerId = rescuerId;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public byte[] getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public Rescuer getRescuer() {
+        return rescuer;
+    }
+
+    public void setRescuer(Rescuer rescuer) {
+        this.rescuer = rescuer;
     }
 }

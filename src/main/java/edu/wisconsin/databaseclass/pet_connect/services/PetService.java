@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.wisconsin.databaseclass.pet_connect.entities.Pet;
+import edu.wisconsin.databaseclass.pet_connect.entities.Rescuer;
 import edu.wisconsin.databaseclass.pet_connect.repositories.PetRepository;
+import edu.wisconsin.databaseclass.pet_connect.repositories.RescuerRepository;
 
 import java.util.List;
 
@@ -29,6 +31,18 @@ public class PetService {
     public void deletePet(int petId) {
         petRepository.deleteById(petId);
     }
+    @Autowired
+    private RescuerRepository rescuerRepository;
+
+    public List<Pet> getPetsByRescuer(int rescuerId) {
+        Rescuer rescuer = rescuerRepository.findById(rescuerId).orElse(null);
+        if (rescuer != null) {
+            return petRepository.findByRescuer(rescuer);
+        }
+        return List.of();
+    }
+
+    public Rescuer getRescuerById(int rescuerId) {
+        return rescuerRepository.findById(rescuerId).orElse(null);
+    }
 }
-
-

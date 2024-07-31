@@ -2,14 +2,28 @@
 
  <div th:fragment="header">
     <header> <!-- Navigation Bar -->
-        <i class='fas fa-comment-alt'></i> <!-- inbox icon -->
+
+        <div class="left-icons-container">
+            <i class='fas fa-comment-alt'></i> <!-- inbox icon -->
+            <i class="fas fa-map-marked-alt"></i>
+        </div>
+        
         <a href="/home">Pet Connect</a> <!-- Home Navigation + App Name -->
     
         <div class="right-icons-container">
-            <a href="/login">  <!-- Anchor so on-click of profile, navigates to login -->
-                <i class='fas fa-user-circle'></i> <!-- profile icon -->
-            </a>
-            
+            <div class="dropdown"> <!-- Dropdown button for profile -->
+                <button class="dropbtn">
+                    <i class='fas fa-user-circle'></i> <!-- profile icon -->
+                </button>
+                <div class="dropdown-content"> <!-- Dropdown content -->
+                    <a th:if="${session.user == null}" href="/login">Login</a> <!-- if user isn't logged in, navigates to login -->
+                    <div th:if="${session.user == null}" class="register">New User? Register<a href="/register"> Here</a></div> <!-- if user isn't logged in, navigates to  -->
+
+                    <a th:if="${session.user != null}" href="/dashboard">Dashboard</a> <!-- if user is logged in, navigates to dashboard -->
+                    <a th:if="${session.user != null}" href="/logout">Sign Out</a> <!-- if user is logged in, navigates to logout -->
+                </div>
+            </div>
+           
             <i class="fas fa-heart"></i> <!-- favorites icon -->
         </div>
     </header>

@@ -10,4 +10,3 @@ import org.springframework.stereotype.Repository;
 public interface FavoritesRepository extends JpaRepository<Favorites, FavoritesId> {
 }
 
-
