@@ -46,13 +46,19 @@ public class UserController {
         if (user == null) {
             return "redirect:/login"; // Redirect to login if user is not in session
         }
-        if (user.getProfileImage() == null) {
-            model.addAttribute("profileImage", "/images/profile-placeholder.png");
+        if (user.getRescuer() != null) {
+            model.addAttribute("pets", userService.getPetsByRescuer(user.getRescuer()));
+            return "redirect:/rescuerDashboard"; // Redirect to rescuer dashboard if user has a rescuer
         } else {
-            model.addAttribute("profileImage", "/profileImage/" + user.getUserId());
+            // User is not a rescuer, proceed with regular user dashboard
+            if (user.getProfileImage() == null) {
+                model.addAttribute("profileImage", "/images/profile-placeholder.png");
+            } else {
+                model.addAttribute("profileImage", "/profileImage/" + user.getUserId());
+            }
+            model.addAttribute("user", user);
+            return "dashboard";
         }
-        model.addAttribute("user", user);
-        return "dashboard";
     }
 
 
@@ -71,6 +77,7 @@ public class UserController {
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
+        user.setRole("USER"); // Default role
         userService.saveUser(user, password); // call to save user in database (pass raw password to hash in Service file)
         logger.info("User registered successfully: " + email);
         return "redirect:/login"; // navigates user to login page on successful account creation
@@ -84,11 +91,15 @@ public class UserController {
         User user = userService.findByEmail(email);
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             session.setAttribute("user", user); // Store user in session
-            return "redirect:/dashboard"; // redirects user to dashboard on successful login attempt
+            if (user.getRescuer() != null) {
+                return "redirect:/rescuerDashboard"; // Redirect to rescuer dashboard if user has a rescuer
+            } else {
+                return "redirect:/dashboard"; // Redirect to user dashboard otherwise
+            }
         } else {
             // on-screen error message on invalid login credentials
             model.addAttribute("errorMessage", "Invalid email or password. Please try again.");
-            return "login";
+            return "/login";
         }
     }
 
@@ -155,5 +166,21 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message", "Failed to update profile.");
         }
         return "redirect:/dashboard";
+    }
+
+    @PostMapping("/convertToRescuer")
+    public String convertToRescuer(@RequestParam("rescuerId") int rescuerId, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login"; // Redirect to login if user is not in session
+        }
+        boolean success = userService.convertToRescuer(user, rescuerId);
+        if (success) {
+            session.setAttribute("user", user); // Update session with new user details
+            return "redirect:/rescuerDashboard";
+        } else {
+            model.addAttribute("errorMessage", "Invalid or already associated Rescuer ID");
+            return "redirect:/dashboard";
+        }
     }
 }

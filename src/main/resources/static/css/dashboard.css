@@ -17,7 +17,15 @@ a {
     height: 50vh;
 }
 
-.profile-card {
+.convert-to-rescuer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 40vh;
+}
+
+.profile-card, .rescuer-card  {
     background-color: #ede0d4;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -34,9 +42,16 @@ a {
     object-fit: cover;
 }
 
+.clear-profile-button-resc {
+    top: 122px; /* Adjust this value to position the button right under the image */
+}
+
 .clear-profile-button {
-    position: absolute;
     top: 105px; /* Adjust this value to position the button right under the image */
+}
+
+.clear-profile-button, .clear-profile-button-resc {
+    position: absolute;
     right: calc(50% - 53px); /* Adjust this value to position the button to the right of the image */
     background-color: #b08968;
     border: none;
@@ -53,24 +68,24 @@ a {
     transition: background-color 0.6s ease-in-out;
 }
 
-.clear-profile-button:hover {
+.clear-profile-button:hover, .clear-profile-button-resc:hover {
     background-color: #917055;
     transition: background-color 0.6s ease-in-out;
 }
 
-.profile-card h2 {
+.profile-card h2, .convert-to-rescuer-container h2 {
     color: #7f5539;
     margin: 10px 0 2px 0; /* Adjusted value to reduce the space below the username */
 }
 
-.profile-card p {
+.profile-card p, .rescuer-card p, .rescuer-card li {
     color: #bb997d;
     font-size: 14px;
     margin-top: 2px; /* Adjusted value to reduce the space above the email */
     margin-bottom: 30px; /* Added value to increase the space below the email */
 }
 
-#editButton {
+#editButton, #convert-button {
     background-color: #b08968;
     border-radius: 4px;
     border: none;
@@ -83,7 +98,7 @@ a {
     transition: background-color 0.3s ease-in-out;
 }
 
-#editButton:hover {
+#editButton:hover, #convert-button:hover {
     transition: background-color 0.3s ease-in-out;
     background-color: #917055;
     color: #ede0d4;
@@ -112,7 +127,12 @@ form label {
     color: #b08968; /* Change label text color */
 }
 
-form input[type="text"] {
+/* custom width for rescuer ID label */
+#rescuer-form label {
+    width: 120px;
+}
+
+form input[type="text"], form input[type="number"] {
     width: 200px; /* Set a fixed width for text input */
     color: #ede0d4;
     background-color: #bb997d;
@@ -122,13 +142,13 @@ form input[type="text"] {
     transition: b0x-shadow 0.6s ease-in-out;
 }
 
-form input[type="text"]:focus {
+form input[type="text"]:focus, form input[type="number"]:focus {
     outline: none;
     box-shadow: inset 0 0 15px #b08968; /* Add inner shadow for highlight */
     transition: box-shadow 0.6s ease-in-out;
 }
 
-form input[type="text"]:hover {
+form input[type="text"]:hover, form input[type="number"]:hover {
     outline: none;
     box-shadow: inset 0 0 20px #b08968; /* Add inner shadow for highlight */
     transition: box-shadow 0.6s ease-in-out;
@@ -180,4 +200,26 @@ form input[type="text"]:hover {
 .save-changes-button:hover {
     background-color: #b08968;
     transition: background-color 0.6s ease-in-out;
+}
+
+#rescuer-Id {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+#maintext { /* make space between rescuer text minimal */
+    margin: 0;
+    padding: 0;
+}
+
+#subtext {
+    text-align: left;
+    margin: 0 auto;
+    margin-bottom: 25px; /* possibly add a divider */
+    padding: 0;
+    width: 380px;
+    font-size: 11px;
+    color: rgb(198, 173, 153);
 }

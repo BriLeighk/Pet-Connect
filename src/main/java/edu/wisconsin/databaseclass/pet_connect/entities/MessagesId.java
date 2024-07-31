@@ -46,4 +46,3 @@ public class MessagesId implements Serializable {
         return Objects.hash(userId, messageId);
     }
 }
-

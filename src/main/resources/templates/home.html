@@ -22,6 +22,15 @@
                     </button>
                 </form>
             </div>
+            <div class="pet-cards">
+                <div th:each="pet : ${pets}" class="pet-card">
+                    <h3 th:text="${pet.name}">Pet Name</h3>
+                    <p th:text="'Breed: ' + ${pet.breed}">Breed</p>
+                    <p th:text="'Type: ' + ${pet.type}">Type</p>
+                    <p th:text="'Age: ' + ${pet.age} + ' years'">Age</p>
+                    <!-- Add more pet details as needed -->
+                </div>
+            </div>
         </div>
     </div>
 </body>

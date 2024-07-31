@@ -6,9 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.wisconsin.databaseclass.pet_connect.entities.User;
+import edu.wisconsin.databaseclass.pet_connect.entities.Pet;
+import edu.wisconsin.databaseclass.pet_connect.entities.Rescuer;
 import edu.wisconsin.databaseclass.pet_connect.repositories.UserRepository;
+import edu.wisconsin.databaseclass.pet_connect.repositories.PetRepository;
+import edu.wisconsin.databaseclass.pet_connect.repositories.RescuerRepository;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -18,6 +23,12 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PetRepository petRepository;
+
+    @Autowired
+    private RescuerRepository rescuerRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -81,5 +92,21 @@ public class UserService {
 
     public boolean emailExists(String email) {
         return userRepository.findByEmail(email) != null;
+    }
+
+    public boolean convertToRescuer(User user, int rescuerId) {
+        Rescuer rescuer = rescuerRepository.findById(rescuerId).orElse(null);
+        if (rescuer == null || rescuer.getUser() != null) {
+            return false; // Invalid rescuerId or already associated
+        }
+        user.setRescuer(rescuer);
+        rescuer.setUser(user);
+        userRepository.save(user);
+        rescuerRepository.save(rescuer);
+        return true;
+    }
+
+    public List<Pet> getPetsByRescuer(Rescuer rescuerId) {
+        return petRepository.findByRescuer(rescuerId);
     }
 }

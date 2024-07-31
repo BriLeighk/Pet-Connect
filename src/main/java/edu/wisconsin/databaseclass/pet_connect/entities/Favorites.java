@@ -3,7 +3,6 @@ package edu.wisconsin.databaseclass.pet_connect.entities;
 import jakarta.persistence.*;
 import java.util.Date;
 
-
 // Entity for the Favorites relationship between User and Pet
 @Entity
 @Table(name = "favorites")
@@ -21,6 +20,7 @@ public class Favorites {
     @JoinColumn(name = "pet_ID")
     private Pet pet;
 
+    @Column
     private Date favorited_at;
 
     // Getters and setters
@@ -57,4 +57,3 @@ public class Favorites {
         this.favorited_at = favorited_at;
     }
 }
-

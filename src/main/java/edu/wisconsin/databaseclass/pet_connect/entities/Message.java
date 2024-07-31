@@ -81,5 +81,3 @@ public class Message {
         this.sent_at = sentAt;
     }
 }
-
-

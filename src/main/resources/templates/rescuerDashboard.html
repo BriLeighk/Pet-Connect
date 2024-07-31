@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!-- User Dashboard -->
+<!-- Rescuer Dashboard -->
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>User Dashboard</title>
+        <title>Rescuer Dashboard</title>
         <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}">
         <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
@@ -10,12 +10,13 @@
     </head>
     <body>
         <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
-        <h1>User Dashboard</h1>
+        <h1>Rescuer Dashboard</h1>
         
         <div class="container">
             <div class="profile-card">
+                <p id="rescuer-Id" th:text="'Rescuer ID: ' + ${rescuerId}">Rescuer ID</p>
                 <img id="profileImage" th:src="${profileImage}" alt="Profile Image">
-                <button type="button" class="clear-profile-button" onclick="clearImage()" style="display: none;">X</button>
+                <button type="button" class="clear-profile-button-resc" onclick="clearImage()" style="display: none;">X</button>
                 <h2 id="profileUsername" th:text="${user.username}">John Doe</h2>
                 <p th:text="${user.email}">john.doe@example.com</p>
                 <button id="editButton" onclick="enableEdit()">Edit</button>
@@ -41,22 +42,16 @@
             </div>
         </div>
 
-        <div class="convert-to-rescuer-container">
-            <h2>Convert to Rescuer</h2>
-            <div class="rescuer-card">
-                <form th:action="@{/convertToRescuer}" method="post" id="rescuer-form">
-                    <p id="maintext">Are you a licensed pet <strong>rescuer</strong>? Enter your unique Rescuer ID below to see if
-                        you qualify for a rescuer account. 
-                    </p>
-                    <li id="subtext">On valid entry of a registered rescuer ID, your account will automatically be migrated to a rescuer
-                        account, where you will be navigated to your new rescuer dashboard.
-                    </li>
-                    <label for="rescuerId">Enter Rescuer ID:</label>
-                    <input type="number" id="rescuerId" name="rescuerId" required>
-                    <button type="submit" id="convert-button">Convert</button>
-                </form>
-            </div>    
+        <!--
+        <div class="pet-cards">
+            <div th:each="pet : ${pets}" class="pet-card">
+                <h3 th:text="${pet.name}">Pet Name</h3>
+                <p th:text="'Breed: ' + ${pet.breed}">Breed</p>
+                <p th:text="'Type: ' + ${pet.type}">Type</p>
+                <p th:text="'Age: ' + ${pet.age} + ' years'">Age</p>
+            </div>
         </div>
+        -->
 
         <div th:if="${errorMessage}" class="error-message">
             <p th:text="${errorMessage}"></p>
@@ -66,7 +61,7 @@
             function enableEdit() {
                 document.getElementById('editForm').style.display = 'block';
                 document.getElementById('editButton').style.display = 'none';
-                document.querySelector('.clear-profile-button').style.display = 'block';
+                document.querySelector('.clear-profile-button-resc').style.display = 'block';
             }
 
             function loadFile(event) {

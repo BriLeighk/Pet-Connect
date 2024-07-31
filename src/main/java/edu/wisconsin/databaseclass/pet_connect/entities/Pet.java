@@ -9,52 +9,58 @@ public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int pet_ID;
+    private int petId;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
     @Column(nullable = false)
-    private String breed;
+    private int breed1;
+
+    @Column
+    private int breed2;
 
     @Column(nullable = false)
-    private String type;
+    private int type;
 
     @Column(nullable = false)
-    private double size;
+    private int maturitySize;
 
     @Column(nullable = false)
     private int age;
 
     @Column(nullable = false)
-    private String gender;
+    private int gender;
 
     @Column(nullable = false)
     private String adoptionStatus;
 
     @Column(nullable = false)
-    private String color;
+    private int color1;
+
+    @Column
+    private int color2;
+
+    @Column
+    private int color3;
 
     @Column(nullable = false)
-    private String healthStatus;
+    private int healthStatus;
 
     @Column(nullable = false)
-    private String vaccinationStatus;
+    private int vaccinationStatus;
 
     @Column(nullable = false)
-    private boolean sterilized;
+    private int sterilized;
 
     @Column(nullable = false)
-    private boolean dewormed;
+    private int dewormed;
 
     @Column(nullable = false)
     private double fee;
 
     @Column(nullable = false)
-    private double maturitySize;
-
-    @Column(nullable = false)
-    private double furLength;
+    private int furLength;
 
     @Column(nullable = false)
     private int videoAmount;
@@ -62,12 +68,12 @@ public class Pet {
     @Column(nullable = false)
     private int photoAmount;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "rescuer_ID", nullable = false)
-    private User rescuer;
+    @JoinColumn(name = "rescuer_id", nullable = false)
+    private Rescuer rescuer;
 
     @ManyToOne
     @JoinColumn(name = "location_ID", nullable = false)
@@ -76,11 +82,11 @@ public class Pet {
     // getters and setters
 
     public int getPetId() {
-        return pet_ID;
+        return petId;
     }
 
     public void setPetId(int petId) {
-        this.pet_ID = petId;
+        this.petId = petId;
     }
 
     public String getName() {
@@ -91,20 +97,36 @@ public class Pet {
         this.name = name;
     }
 
-    public String getBreed() {
-        return breed;
+    public int getBreed1() {
+        return breed1;
     }
 
-    public void setBreed(String breed) {
-        this.breed = breed;
+    public void setBreed1(int breed1) {
+        this.breed1 = breed1;
     }
 
-    public String getType() {
+    public int getBreed2() {
+        return breed2;
+    }
+
+    public void setBreed2(int breed2) {
+        this.breed2 = breed2;
+    }
+
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
+    }
+
+    public int getMaturitySize() {
+        return maturitySize;
+    }
+
+    public void setMaturitySize(int maturitySize) {
+        this.maturitySize = maturitySize;
     }
 
     public int getAge() {
@@ -115,6 +137,131 @@ public class Pet {
         this.age = age;
     }
 
-    // other getters and setters
-}
+    public int getGender() {
+        return gender;
+    }
 
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public String getAdoptionStatus() {
+        return adoptionStatus;
+    }
+
+    public void setAdoptionStatus(String adoptionStatus) {
+        this.adoptionStatus = adoptionStatus;
+    }
+
+    public int getColor1() {
+        return color1;
+    }
+
+    public void setColor1(int color1) {
+        this.color1 = color1;
+    }
+
+    public int getColor2() {
+        return color2;
+    }
+
+    public void setColor2(int color2) {
+        this.color2 = color2;
+    }
+
+    public int getColor3() {
+        return color3;
+    }
+
+    public void setColor3(int color3) {
+        this.color3 = color3;
+    }
+
+    public int getHealthStatus() {
+        return healthStatus;
+    }
+
+    public void setHealthStatus(int healthStatus) {
+        this.healthStatus = healthStatus;
+    }
+
+    public int getVaccinationStatus() {
+        return vaccinationStatus;
+    }
+
+    public void setVaccinationStatus(int vaccinationStatus) {
+        this.vaccinationStatus = vaccinationStatus;
+    }
+
+    public int getSterilized() {
+        return sterilized;
+    }
+
+    public void setSterilized(int sterilized) {
+        this.sterilized = sterilized;
+    }
+
+    public int getDewormed() {
+        return dewormed;
+    }
+
+    public void setDewormed(int dewormed) {
+        this.dewormed = dewormed;
+    }
+
+    public double getFee() {
+        return fee;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
+
+    public int getFurLength() {
+        return furLength;
+    }
+
+    public void setFurLength(int furLength) {
+        this.furLength = furLength;
+    }
+
+    public int getVideoAmount() {
+        return videoAmount;
+    }
+
+    public void setVideoAmount(int videoAmount) {
+        this.videoAmount = videoAmount;
+    }
+
+    public int getPhotoAmount() {
+        return photoAmount;
+    }
+
+    public void setPhotoAmount(int photoAmount) {
+        this.photoAmount = photoAmount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Rescuer getRescuer() {
+        return rescuer;
+    }
+
+    public void setRescuer(Rescuer rescuer) {
+        this.rescuer = rescuer;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+}

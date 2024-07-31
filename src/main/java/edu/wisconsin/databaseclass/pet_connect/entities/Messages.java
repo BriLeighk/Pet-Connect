@@ -45,6 +45,3 @@ public class Messages {
         this.message = message;
     }
 }
-
-
-
