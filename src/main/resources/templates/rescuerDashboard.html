@@ -9,26 +9,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
 </head>
 <body>
-    <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
+    <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display on page -->
     <h1>Rescuer Dashboard</h1>
     
+    <!-- container to handle rescuer profile card structuring -->
     <div class="container">
         <div class="profile-card"> <!-- User profile card -->
             <p id="rescuer-Id" th:text="'Rescuer ID: ' + ${rescuerId}">Rescuer ID</p>
             <img id="profileImage" th:src="${profileImage}" alt="Profile Image">
+            <!-- button to clear profile image in rescuer dashboard-->
             <button type="button" class="clear-profile-button-resc" onclick="clearImage()" style="display: none;">X</button>
             <h2 id="profileUsername" th:text="${user.username}">John Doe</h2>
             <p th:text="${user.email}">john.doe@example.com</p>
+            <!-- button to edit user profile card -->
             <button id="editButton" onclick="enableEdit()">Edit</button>
             
             <div id="editForm" style="display: none;">
-                <form method="post" enctype="multipart/form-data" action="/updateProfile">
+                <form method="post" enctype="multipart/form-data" action="/updateProfile"> <!-- call to endpoint that updates user profile in database -->
                     <div>
                         <label>Username:</label>
-                        <input type="text" id="username" name="username" th:value="${user.username}" oninput="updateUsername()">
+                        <input type="text" id="username" name="username" th:value="${user.username}" oninput="updateUsername()"> <!-- call to imbeded JS to update username -->
                     </div>
                     <div>
                         <label>Profile Image:</label>
+                        <!-- fetch and display user profile image -->
                         <input type="file" id="fileInput" name="file" accept="image/*" onchange="loadFile(event)" style="display: none;">
                         <button type="button" class="custom-file-button" onclick="document.getElementById('fileInput').click();">
                             <i class="fas fa-upload"></i> Choose File
@@ -42,52 +46,28 @@
         </div>
     </div>
 
-    <!-- Container for Pet Profiles -->
+    <!-- Container for Pet Profile Cards -->
     <div class="pet-cards">
         <h2>Your Pets</h2>
-        <div th:fragment="pet-card">
+        <div th:fragment="pet-card"> 
             <div th:each="pet : ${pets}" class="pet-card" th:onclick="'openPetModal(' + ${pet.petId} + ')'">
                 <img th:src="@{'/petImage/' + ${pet.petId}}" alt="Pet Image" class="pet-image"> <!-- Pet Profile Image -->
                 <h3 th:text="${pet.name}">Pet Name</h3> <!-- Name -->
                 <p th:text="'Adoption Status: ' + ${pet.adoptionStatus}">Adoption Status</p> <!-- Adoption Status -->
                 <p th:text="'Fee: $' + ${pet.fee}">Fee</p> <!-- Fee -->
+                <i class="fas fa-trash delete-pet-icon" th:onclick="'deletePet(' + ${pet.petId} + ');event.stopPropagation();'"></i> <!-- Delete icon -->
             </div>
         </div>
     </div>
 
     <!-- Modal for Pet Information -->
-    <div id="petModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closePetModal()">&times;</span>
-            <h2 id="modalPetName">Pet Name</h2>
-            <img id="modalPetImage" src="" alt="Pet Image" class="modal-pet-image">
-            <p id="modalPetAdoptionStatus">Adoption Status: </p>
-            <p id="modalPetFee">Fee: </p>
-            <p id="modalPetDescription">Description: </p>
-            <p id="modalPetType">Type: </p>
-            <p id="modalPetBreed1">Breed 1: </p>
-            <p id="modalPetBreed2">Breed 2: </p>
-            <p id="modalPetColor1">Color 1: </p>
-            <p id="modalPetColor2">Color 2: </p>
-            <p id="modalPetColor3">Color 3: </p>
-            <p id="modalPetLocation">Location: </p>
-            <p id="modalPetMaturitySize">Maturity Size: </p>
-            <p id="modalPetAge">Age: </p>
-            <p id="modalPetGender">Gender: </p>
-            <p id="modalPetHealthStatus">Health Status: </p>
-            <p id="modalPetVaccinationStatus">Vaccination Status: </p>
-            <p id="modalPetSterilized">Sterilized: </p>
-            <p id="modalPetDewormed">Dewormed: </p>
-            <p id="modalPetFurLength">Fur Length: </p>
-            
-        </div>
-    </div>
+    <div th:insert="~{pets :: petModal}"></div>
 
     <!-- Form for Adding New Pet -->
     <div id="addPetForm">
         <div class="addpet-content">
             <h2>Add New Pet</h2>
-            <form id="petForm" method="post" action="/addPet" enctype="multipart/form-data">
+            <form id="petForm" method="post" action="/addPet" enctype="multipart/form-data"> <!-- call to endpoint that adds new pet in database -->
                 <input type="hidden" name="rescuerId" th:value="${rescuerId}">
                 <div>
                     <label for="name">Name:</label>
@@ -231,8 +211,12 @@
         </div>
     </div>
 
+    <!-- petModalScripts fragment from pets.html -->
+    <div th:insert="~{pets :: petModalScripts}"></div>
+
     <script th:inline="javascript">
         /*<![CDATA[*/
+        // function to update breeds based on pet type 
         function updateBreeds() {
             const type = document.getElementById('type').value;
             const breed1Select = document.getElementById('breed1');
@@ -269,13 +253,14 @@
                 .catch(error => console.error('Error fetching breeds:', error));
         }
     
-
+        // load user profile image
         function loadFile(event) {
             var image = document.getElementById('profileImage');
             image.src = URL.createObjectURL(event.target.files[0]);
             document.getElementById('clearImageFlag').value = 'false';
         }
 
+        // clear user profile image
         function clearImage() {
             var image = document.getElementById('profileImage');
             image.src = '/images/profile-placeholder.png';
@@ -289,49 +274,22 @@
             profileUsername.textContent = usernameInput.value;
         }
 
-        function openPetModal(petId) {
-            fetch(`/pet/${petId}`)
-            .then(response => response.json())
-            .then(pet => {
-                document.getElementById('modalPetName').textContent = pet.name;
-                document.getElementById('modalPetImage').src = pet.photoUrl;
-                document.getElementById('modalPetAdoptionStatus').textContent = 'Adoption Status: ' + pet.adoptionStatus;
-                document.getElementById('modalPetFee').textContent = 'Fee: $' + pet.fee;
-                document.getElementById('modalPetType').textContent = 'Type: ' + pet.type;
-                document.getElementById('modalPetBreed1').textContent = 'Breed 1: ' + pet.breed1;
-                if (pet.breed2) {
-                    document.getElementById('modalPetBreed2').textContent = 'Breed 2: ' + pet.breed2;
-                } else {
-                    document.getElementById('modalPetBreed2').style.display = 'none';
-                }
-                document.getElementById('modalPetColor1').textContent = 'Color 1: ' + pet.color1;
-                if (pet.color2) {
-                    document.getElementById('modalPetColor2').textContent = 'Color 2: ' + pet.color2;
-                } else {
-                    document.getElementById('modalPetColor2').style.display = 'none';
-                }
-                if (pet.color3) {
-                    document.getElementById('modalPetColor3').textContent = 'Color 3: ' + pet.color3;
-                } else {
-                    document.getElementById('modalPetColor3').style.display = 'none';
-                }
-                document.getElementById('modalPetLocation').textContent = 'Location: ' + pet.location;
-                document.getElementById('modalPetMaturitySize').textContent = 'Maturity Size: ' + pet.maturitySize;
-                document.getElementById('modalPetAge').textContent = 'Age: ' + pet.age + ' months';
-                document.getElementById('modalPetGender').textContent = 'Gender: ' + pet.gender;
-                document.getElementById('modalPetHealthStatus').textContent = 'Health Status: ' + pet.healthStatus;
-                document.getElementById('modalPetVaccinationStatus').textContent = 'Vaccination Status: ' + pet.vaccinationStatus;
-                document.getElementById('modalPetSterilized').textContent = 'Sterilized: ' + pet.sterilized;
-                document.getElementById('modalPetDewormed').textContent = 'Dewormed: ' + pet.dewormed;
-                document.getElementById('modalPetFurLength').textContent = 'Fur Length: ' + pet.furLength;
-                document.getElementById('modalPetDescription').textContent = 'Description: ' + pet.description;
-                document.getElementById('petModal').style.display = 'block';
-            })
-            .catch(error => console.error('Error fetching pet details:', error));
-    }
-
-        function closePetModal() {
-            document.getElementById('petModal').style.display = 'none';
+        // delete pet profile from database
+        function deletePet(petId) {
+            if (confirm('Are you sure you want to delete this pet?')) {
+                fetch(`/deletePet/${petId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Pet deleted successfully');
+                        location.reload(); // Reload the page to reflect the changes
+                    } else {
+                        alert('Failed to delete pet');
+                    }
+                })
+                .catch(error => console.error('Error deleting pet:', error));
+            }
         }
         /*]]>*/
     </script>

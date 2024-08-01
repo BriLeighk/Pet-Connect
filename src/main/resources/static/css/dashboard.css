@@ -233,3 +233,15 @@ form input[type="text"]:hover, form input[type="number"]:hover {
     color: #bb997d; /* Lighter color */
     font-size: 13px;
 }
+
+.delete-pet-icon {
+    color: darkred;
+    cursor: pointer;
+    position: relative;
+    left: 45%;
+    font-size: 1.2em;
+}
+
+.delete-pet-icon:hover {
+    color: rgb(106, 1, 1);
+}

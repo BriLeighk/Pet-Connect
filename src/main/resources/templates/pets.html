@@ -35,7 +35,89 @@
                 No items match your search
             </span>
         </div>
-        
 
+        <!-- Define the petModal as a fragment for displaying pet details on click -->
+        <div th:fragment="petModal">
+            <div id="petModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closePetModal()">&times;</span>
+                    <h2 id="modalPetName">Pet Name</h2>
+                    <img id="modalPetImage" src="" alt="Pet Image" class="modal-pet-image">
+                    <p id="modalPetAdoptionStatus">Adoption Status: </p>
+                    <p id="modalPetFee">Fee: </p>
+                    <p id="modalPetDescription">Description: </p>
+                    <p id="modalPetType">Type: </p>
+                    <p id="modalPetBreed1">Breed 1: </p>
+                    <p id="modalPetBreed2">Breed 2: </p>
+                    <p id="modalPetColor1">Color 1: </p>
+                    <p id="modalPetColor2">Color 2: </p>
+                    <p id="modalPetColor3">Color 3: </p>
+                    <p id="modalPetLocation">Location: </p>
+                    <p id="modalPetMaturitySize">Maturity Size: </p>
+                    <p id="modalPetAge">Age: </p>
+                    <p id="modalPetGender">Gender: </p>
+                    <p id="modalPetHealthStatus">Health Status: </p>
+                    <p id="modalPetVaccinationStatus">Vaccination Status: </p>
+                    <p id="modalPetSterilized">Sterilized: </p>
+                    <p id="modalPetDewormed">Dewormed: </p>
+                    <p id="modalPetFurLength">Fur Length: </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Define the JavaScript functions as a fragment -->
+        <div th:fragment="petModalScripts">
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+
+                // formatting for opening the pet modal to display pet information
+                function openPetModal(petId) {
+                    fetch(`/pet/${petId}`)
+                    .then(response => response.json())
+                    .then(pet => {
+                        document.getElementById('modalPetName').textContent = pet.name;
+                        document.getElementById('modalPetImage').src = pet.photoUrl;
+                        document.getElementById('modalPetAdoptionStatus').textContent = 'Adoption Status: ' + pet.adoptionStatus;
+                        document.getElementById('modalPetFee').textContent = 'Fee: $' + pet.fee;
+                        document.getElementById('modalPetType').textContent = 'Type: ' + pet.type;
+                        document.getElementById('modalPetBreed1').textContent = 'Breed 1: ' + pet.breed1;
+                        if (pet.breed2) {
+                            document.getElementById('modalPetBreed2').textContent = 'Breed 2: ' + pet.breed2;
+                        } else {
+                            document.getElementById('modalPetBreed2').style.display = 'none';
+                        }
+                        document.getElementById('modalPetColor1').textContent = 'Color 1: ' + pet.color1;
+                        if (pet.color2) {
+                            document.getElementById('modalPetColor2').textContent = 'Color 2: ' + pet.color2;
+                        } else {
+                            document.getElementById('modalPetColor2').style.display = 'none';
+                        }
+                        if (pet.color3) {
+                            document.getElementById('modalPetColor3').textContent = 'Color 3: ' + pet.color3;
+                        } else {
+                            document.getElementById('modalPetColor3').style.display = 'none';
+                        }
+                        document.getElementById('modalPetLocation').textContent = 'Location: ' + pet.location;
+                        document.getElementById('modalPetMaturitySize').textContent = 'Maturity Size: ' + pet.maturitySize;
+                        document.getElementById('modalPetAge').textContent = 'Age: ' + pet.age + ' months';
+                        document.getElementById('modalPetGender').textContent = 'Gender: ' + pet.gender;
+                        document.getElementById('modalPetHealthStatus').textContent = 'Health Status: ' + pet.healthStatus;
+                        document.getElementById('modalPetVaccinationStatus').textContent = 'Vaccination Status: ' + pet.vaccinationStatus;
+                        document.getElementById('modalPetSterilized').textContent = 'Sterilized: ' + pet.sterilized;
+                        document.getElementById('modalPetDewormed').textContent = 'Dewormed: ' + pet.dewormed;
+                        document.getElementById('modalPetFurLength').textContent = 'Fur Length: ' + pet.furLength;
+                        document.getElementById('modalPetDescription').textContent = 'Description: ' + pet.description;
+                        document.getElementById('petModal').style.display = 'block';
+                    })
+                    .catch(error => console.error('Error fetching pet details:', error));
+                }
+
+                // function to close pet modal
+                function closePetModal() {
+                    document.getElementById('petModal').style.display = 'none';
+                }
+                /*]]>*/
+            </script>
+        </div>
     </body>
 </html>

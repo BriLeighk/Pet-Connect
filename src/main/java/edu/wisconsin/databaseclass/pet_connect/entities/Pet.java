@@ -68,6 +68,7 @@ public class Pet {
     @Column(nullable = false)
     private int photoAmount = 0;
 
+    // column for pet photos
     @Lob
     @Column(name = "photos", columnDefinition = "LONGBLOB")
     private byte[] photos;
@@ -111,8 +112,8 @@ public class Pet {
         return breed1;
     }
 
-    public void setBreed1(int breed1) {
-        this.breed1 = breed1;
+    public void setBreed1(int breed12) {
+        this.breed1 = breed12;
     }
 
     public Integer getBreed2() {

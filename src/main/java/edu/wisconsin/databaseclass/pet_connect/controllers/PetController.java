@@ -1,21 +1,27 @@
 package edu.wisconsin.databaseclass.pet_connect.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import edu.wisconsin.databaseclass.pet_connect.entities.Breed;
 import edu.wisconsin.databaseclass.pet_connect.entities.Color;
 import edu.wisconsin.databaseclass.pet_connect.entities.Location;
 import edu.wisconsin.databaseclass.pet_connect.entities.Pet;
+import edu.wisconsin.databaseclass.pet_connect.entities.Rescuer;
 import edu.wisconsin.databaseclass.pet_connect.services.PetService;
 import edu.wisconsin.databaseclass.pet_connect.dtos.PetDTO;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -27,7 +33,7 @@ public class PetController {
     @Autowired
     private PetService petService;
 
-
+    // endpoint to show add new pet form
     @GetMapping("/addNewPet")
     public String showAddNewPetForm(Model model) {
         List<Breed> dogBreeds = petService.getBreedsByType(1);
@@ -47,12 +53,14 @@ public class PetController {
         return "addNewPet";
     }
 
+    // endpoint to get breeds by type
     @GetMapping("/breeds")
     @ResponseBody
     public List<Breed> getBreedsByType(@RequestParam("type") int type) {
         return petService.getBreedsByType(type);
     }
 
+    // endpoint to get pet image
     @GetMapping("/petImage/{petId}")
     @ResponseBody
     public ResponseEntity<byte[]> getPetImage(@PathVariable int petId) {
@@ -63,6 +71,7 @@ public class PetController {
         return ResponseEntity.notFound().build();
     }
 
+    // endpoint to get pet by id
     @GetMapping("/pet/{petId}")
     @ResponseBody
     public PetDTO getPetById(@PathVariable int petId) {
@@ -101,6 +110,18 @@ public class PetController {
         return null;
     }
 
+    // endpoint to delete pet by id
+    @DeleteMapping("/deletePet/{petId}")
+    public ResponseEntity<Void> deletePet(@PathVariable Integer petId) {
+        try {
+            petService.deletePetById(petId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // helper function to get maturity size string
     private String getMaturitySizeString(int maturitySize) {
         switch (maturitySize) {
             case 1: return "Small";
@@ -111,6 +132,7 @@ public class PetController {
         }
     }
 
+    // helper function to get health status string
     private String getHealthStatusString(int healthStatus) {
         switch (healthStatus) {
             case 1: return "Healthy";
@@ -120,6 +142,7 @@ public class PetController {
         }
     }
 
+    // helper function to get vaccination status string
     private String getVaccinationStatusString(int vaccinationStatus) {
         switch (vaccinationStatus) {
             case 1: return "Vaccinated";
@@ -128,6 +151,7 @@ public class PetController {
         }
     }
 
+    // helper function to get sterilized string
     private String getSterilizedString(int sterilized) {
         switch (sterilized) {
             case 1: return "Sterilized";
@@ -136,6 +160,7 @@ public class PetController {
         }
     }
 
+    // helper function to get dewormed string
     private String getDewormedString(int dewormed) {
         switch (dewormed) {
             case 1: return "Dewormed";
@@ -144,6 +169,7 @@ public class PetController {
         }
     }
 
+    // helper function to get fur length string
     private String getFurLengthString(int furLength) {
         switch (furLength) {
             case 1: return "Short";
@@ -151,5 +177,56 @@ public class PetController {
             case 3: return "Long";
             default: return "Not Specified";
         }
+    }
+
+    // endpoint to add pet
+    @PostMapping("/addPet")
+    public String addPet(@RequestParam("name") String name, @RequestParam("breed1") int breed1,
+                          @RequestParam(value = "breed2", required = false) Integer breed2, @RequestParam("type") int type,
+                          @RequestParam("maturitySize") int maturitySize, @RequestParam("age") int age,
+                          @RequestParam("gender") int gender, @RequestParam("adoptionStatus") String adoptionStatus,
+                          @RequestParam("color1") int color1, @RequestParam(value = "color2", required = false) Integer color2,
+                          @RequestParam(value = "color3", required = false) Integer color3, @RequestParam("healthStatus") int healthStatus,
+                          @RequestParam("vaccinationStatus") int vaccinationStatus, @RequestParam("sterilized") int sterilized,
+                          @RequestParam("dewormed") int dewormed, @RequestParam(value = "fee", defaultValue = "0") double fee,
+                          @RequestParam("furLength") int furLength, @RequestParam("location") int locationId,
+                          @RequestParam("rescuerId") int rescuerId, @RequestParam("description") String description, // Add description
+                          @RequestParam("photos") MultipartFile[] photos) {
+        Pet pet = new Pet();
+        pet.setName(name);
+        pet.setBreed1(breed1);
+        pet.setBreed2(breed2);
+        pet.setType(type);
+        pet.setMaturitySize(maturitySize);
+        pet.setAge(age);
+        pet.setGender(gender);
+        pet.setAdoptionStatus(adoptionStatus);
+        pet.setColor1(color1);
+        pet.setColor2(color2);
+        pet.setColor3(color3);
+        pet.setHealthStatus(healthStatus);
+        pet.setVaccinationStatus(vaccinationStatus);
+        pet.setSterilized(sterilized);
+        pet.setDewormed(dewormed);
+        pet.setFee(fee);
+        pet.setFurLength(furLength);
+        pet.setDescription(description); // Set description
+        pet.setPhotoAmount(photos != null ? photos.length : 0); // Set photo amount based on uploaded photos
+        Location location = petService.getLocationById(locationId);
+        pet.setLocation(location);
+        Rescuer rescuer = petService.getRescuerById(rescuerId);
+        pet.setRescuer(rescuer);
+
+        try {
+            if (photos != null && photos.length > 0) {
+                pet.setPhotos(photos[0].getBytes());
+            }
+        } catch (IOException e) {
+            // Handle exception
+        }
+
+        // save pet to database
+        petService.savePet(pet);
+        return "redirect:/rescuerDashboard";
     }
 }

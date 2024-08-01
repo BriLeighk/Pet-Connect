@@ -1,5 +1,6 @@
 package edu.wisconsin.databaseclass.pet_connect.dtos;
 
+// PetDTO class to handle pet data
 public class PetDTO {
     private int petId;
     private String name;
