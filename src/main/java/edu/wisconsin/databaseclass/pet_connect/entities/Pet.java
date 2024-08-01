@@ -18,7 +18,7 @@ public class Pet {
     private int breed1;
 
     @Column
-    private int breed2;
+    private Integer breed2;
 
     @Column(nullable = false)
     private int type;
@@ -33,16 +33,16 @@ public class Pet {
     private int gender;
 
     @Column(nullable = false)
-    private String adoptionStatus;
+    private String adoptionStatus = "Available"; // only displays in edit modal (creating a pet profile assumes the pet needs to be adopted)
 
     @Column(nullable = false)
     private int color1;
 
     @Column
-    private int color2;
+    private Integer color2;
 
     @Column
-    private int color3;
+    private Integer color3;
 
     @Column(nullable = false)
     private int healthStatus;
@@ -63,21 +63,31 @@ public class Pet {
     private int furLength;
 
     @Column(nullable = false)
-    private int videoAmount;
+    private int videoAmount = 0;
 
     @Column(nullable = false)
-    private int photoAmount;
+    private int photoAmount = 0;
 
-    @Column
-    private String description;
+    @Lob
+    @Column(name = "photos", columnDefinition = "LONGBLOB")
+    private byte[] photos;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
 
     @ManyToOne
     @JoinColumn(name = "rescuer_id", nullable = false)
     private Rescuer rescuer;
 
-    @ManyToOne
-    @JoinColumn(name = "location_ID", nullable = false)
-    private Location location;
+    @Transient
+    private String breed1Name;
+
+    @Transient
+    private String breed2Name;
+
+    @Column
+    private String description;
 
     // getters and setters
 
@@ -105,11 +115,11 @@ public class Pet {
         this.breed1 = breed1;
     }
 
-    public int getBreed2() {
+    public Integer getBreed2() {
         return breed2;
     }
 
-    public void setBreed2(int breed2) {
+    public void setBreed2(Integer breed2) {
         this.breed2 = breed2;
     }
 
@@ -161,19 +171,19 @@ public class Pet {
         this.color1 = color1;
     }
 
-    public int getColor2() {
+    public Integer getColor2() {
         return color2;
     }
 
-    public void setColor2(int color2) {
+    public void setColor2(Integer color2) {
         this.color2 = color2;
     }
 
-    public int getColor3() {
+    public Integer getColor3() {
         return color3;
     }
 
-    public void setColor3(int color3) {
+    public void setColor3(Integer color3) {
         this.color3 = color3;
     }
 
@@ -241,12 +251,20 @@ public class Pet {
         this.photoAmount = photoAmount;
     }
 
-    public String getDescription() {
-        return description;
+    public byte[] getPhotos() {
+        return photos;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPhotos(byte[] photos) {
+        this.photos = photos;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Rescuer getRescuer() {
@@ -257,11 +275,27 @@ public class Pet {
         this.rescuer = rescuer;
     }
 
-    public Location getLocation() {
-        return location;
+    public String getBreed1Name() {
+        return breed1Name;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setBreed1Name(String breed1Name) {
+        this.breed1Name = breed1Name;
+    }
+
+    public String getBreed2Name() {
+        return breed2Name;
+    }
+
+    public void setBreed2Name(String breed2Name) {
+        this.breed2Name = breed2Name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

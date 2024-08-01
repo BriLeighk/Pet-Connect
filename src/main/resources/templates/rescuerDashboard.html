@@ -1,87 +1,339 @@
 <!DOCTYPE html>
 <!-- Rescuer Dashboard -->
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Rescuer Dashboard</title>
-        <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}">
-        <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
-        <link rel="icon" type="image/png" th:href="@{/favicon.png}">
-    </head>
-    <body>
-        <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
-        <h1>Rescuer Dashboard</h1>
-        
-        <div class="container">
-            <div class="profile-card">
-                <p id="rescuer-Id" th:text="'Rescuer ID: ' + ${rescuerId}">Rescuer ID</p>
-                <img id="profileImage" th:src="${profileImage}" alt="Profile Image">
-                <button type="button" class="clear-profile-button-resc" onclick="clearImage()" style="display: none;">X</button>
-                <h2 id="profileUsername" th:text="${user.username}">John Doe</h2>
-                <p th:text="${user.email}">john.doe@example.com</p>
-                <button id="editButton" onclick="enableEdit()">Edit</button>
-                
-                <div id="editForm" style="display: none;">
-                    <form method="post" enctype="multipart/form-data" action="/updateProfile">
-                        <div>
-                            <label>Username:</label>
-                            <input type="text" id="username" name="username" th:value="${user.username}" oninput="updateUsername()">
-                        </div>
-                        <div>
-                            <label>Profile Image:</label>
-                            <input type="file" id="fileInput" name="file" accept="image/*" onchange="loadFile(event)" style="display: none;">
-                            <button type="button" class="custom-file-button" onclick="document.getElementById('fileInput').click();">
-                                <i class="fas fa-upload"></i> Choose File
-                            </button>
-                            <input type="hidden" id="clearImageFlag" name="clearImageFlag" value="false">
-                        </div>
-                        <input type="hidden" name="userId" th:value="${user.userId}">
-                        <button type="submit" class="save-changes-button" style="margin-left: 0;">Save Changes</button>
-                    </form>
+<head>
+    <title>Rescuer Dashboard</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/pets.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+</head>
+<body>
+    <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
+    <h1>Rescuer Dashboard</h1>
+    
+    <div class="container">
+        <div class="profile-card"> <!-- User profile card -->
+            <p id="rescuer-Id" th:text="'Rescuer ID: ' + ${rescuerId}">Rescuer ID</p>
+            <img id="profileImage" th:src="${profileImage}" alt="Profile Image">
+            <button type="button" class="clear-profile-button-resc" onclick="clearImage()" style="display: none;">X</button>
+            <h2 id="profileUsername" th:text="${user.username}">John Doe</h2>
+            <p th:text="${user.email}">john.doe@example.com</p>
+            <button id="editButton" onclick="enableEdit()">Edit</button>
+            
+            <div id="editForm" style="display: none;">
+                <form method="post" enctype="multipart/form-data" action="/updateProfile">
+                    <div>
+                        <label>Username:</label>
+                        <input type="text" id="username" name="username" th:value="${user.username}" oninput="updateUsername()">
+                    </div>
+                    <div>
+                        <label>Profile Image:</label>
+                        <input type="file" id="fileInput" name="file" accept="image/*" onchange="loadFile(event)" style="display: none;">
+                        <button type="button" class="custom-file-button" onclick="document.getElementById('fileInput').click();">
+                            <i class="fas fa-upload"></i> Choose File
+                        </button>
+                        <input type="hidden" id="clearImageFlag" name="clearImageFlag" value="false">
+                    </div>
+                    <input type="hidden" name="userId" th:value="${user.userId}">
+                    <button type="submit" class="save-changes-button" style="margin-left: 0;">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container for Pet Profiles -->
+    <div class="pet-cards">
+        <h2>Your Pets</h2>
+        <div th:fragment="pet-card">
+            <div th:each="pet : ${pets}" class="pet-card" th:onclick="'openPetModal(' + ${pet.petId} + ')'">
+                <img th:src="@{'/petImage/' + ${pet.petId}}" alt="Pet Image" class="pet-image"> <!-- Pet Profile Image -->
+                <h3 th:text="${pet.name}">Pet Name</h3> <!-- Name -->
+                <p th:text="'Adoption Status: ' + ${pet.adoptionStatus}">Adoption Status</p> <!-- Adoption Status -->
+                <p th:text="'Fee: $' + ${pet.fee}">Fee</p> <!-- Fee -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Pet Information -->
+    <div id="petModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePetModal()">&times;</span>
+            <h2 id="modalPetName">Pet Name</h2>
+            <img id="modalPetImage" src="" alt="Pet Image" class="modal-pet-image">
+            <p id="modalPetAdoptionStatus">Adoption Status: </p>
+            <p id="modalPetFee">Fee: </p>
+            <p id="modalPetDescription">Description: </p>
+            <p id="modalPetType">Type: </p>
+            <p id="modalPetBreed1">Breed 1: </p>
+            <p id="modalPetBreed2">Breed 2: </p>
+            <p id="modalPetColor1">Color 1: </p>
+            <p id="modalPetColor2">Color 2: </p>
+            <p id="modalPetColor3">Color 3: </p>
+            <p id="modalPetLocation">Location: </p>
+            <p id="modalPetMaturitySize">Maturity Size: </p>
+            <p id="modalPetAge">Age: </p>
+            <p id="modalPetGender">Gender: </p>
+            <p id="modalPetHealthStatus">Health Status: </p>
+            <p id="modalPetVaccinationStatus">Vaccination Status: </p>
+            <p id="modalPetSterilized">Sterilized: </p>
+            <p id="modalPetDewormed">Dewormed: </p>
+            <p id="modalPetFurLength">Fur Length: </p>
+            
+        </div>
+    </div>
+
+    <!-- Form for Adding New Pet -->
+    <div id="addPetForm">
+        <div class="addpet-content">
+            <h2>Add New Pet</h2>
+            <form id="petForm" method="post" action="/addPet" enctype="multipart/form-data">
+                <input type="hidden" name="rescuerId" th:value="${rescuerId}">
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name">
                 </div>
-            </div>
+                <div>
+                    <label for="type">Type:</label>
+                    <select id="type" name="type" onchange="updateBreeds()" required>
+                        <option value="" selected>None Selected</option>
+                        <option value="1">Dog</option>
+                        <option value="2">Cat</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="breed1">Breed 1:</label>
+                    <select id="breed1" name="breed1" required>
+                        <option value="">None Selected</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+                <div>
+                    <label for="breed2">Breed 2:</label>
+                    <select id="breed2" name="breed2">
+                        <option value="">None Selected</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+                <div>
+                    <label for="color1">Color 1:</label>
+                    <select id="color1" name="color1" required>
+                        <option value="">None Selected</option>
+                        <option th:each="color : ${colors}" th:value="${color.colorId}" th:text="${color.name}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="color2">Color 2:</label>
+                    <select id="color2" name="color2">
+                        <option value="">None Selected</option>
+                        <option th:each="color : ${colors}" th:value="${color.colorId}" th:text="${color.name}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="color3">Color 3:</label>
+                    <select id="color3" name="color3">
+                        <option value="">None Selected</option>
+                        <option th:each="color : ${colors}" th:value="${color.colorId}" th:text="${color.name}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="location">Location <span class="light-italic-text">(Malaysia)</span>:</label>
+                    <select id="location" name="location" required>
+                        <option value="">None Selected</option>
+                        <option th:each="location : ${locations}" th:value="${location.locationId}" th:text="${location.state}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="maturitySize">Maturity Size:</label>
+                    <select id="maturitySize" name="maturitySize" required>
+                        <option value="0">Not Specified</option>
+                        <option value="1">Small</option>
+                        <option value="2">Medium</option>
+                        <option value="3">Large</option>
+                        <option value="4">Extra Large</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="age">Age <span class="light-italic-text">(months)</span>:</label>
+                    <input type="number" id="age" name="age" required>
+                </div>
+                <div>
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="" selected>None Selected</option>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="adoptionStatus">Adoption Status:</label>
+                    <select id="adoptionStatus" name="adoptionStatus" required>
+                        <option value="Available">Available</option>
+                        <option value="Adopted">Adopted</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="healthStatus">Health Status:</label>
+                    <select id="healthStatus" name="healthStatus" required>
+                        <option value="0">Not Specified</option>
+                        <option value="1">Healthy</option>
+                        <option value="2">Minor Injury</option>
+                        <option value="3">Serious Injury</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="vaccinationStatus">Vaccination Status:</label>
+                    <select id="vaccinationStatus" name="vaccinationStatus" required>
+                        <option value="3">Not Sure</option>
+                        <option value="1">Vaccinated</option>
+                        <option value="2">Not Vaccinated</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="sterilized">Sterilized <span class="light-italic-text">(spayed / neutered)</span>:</label>
+                    <select id="sterilized" name="sterilized" required>
+                        <option value="3">Not Sure</option>
+                        <option value="1">Sterilized</option>
+                        <option value="2">Not Sterilized</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="dewormed">Dewormed:</label>
+                    <select id="dewormed" name="dewormed" required>
+                        <option value="3">Not Sure</option>
+                        <option value="1">Dewormed</option>
+                        <option value="2">Not Dewormed</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="fee">Adoption Fee:</label>
+                    <input type="number" id="fee" name="fee" step="0.01" required>
+                </div>
+                <div>
+                    <label for="furLength">Fur Length:</label>
+                    <select id="furLength" name="furLength" required>
+                        <option value="0">Not Specified</option>
+                        <option value="1">Short</option>
+                        <option value="2">Medium</option>
+                        <option value="3">Long</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" cols="50"></textarea>
+                </div>
+                <div>
+                    <label for="photos">Upload Photos:</label>
+                    <input type="file" id="photos" name="photos" accept="image/*" multiple>
+                </div>
+                <button type="submit">Save</button>
+            </form>
         </div>
+    </div>
 
-        <!--
-        <div class="pet-cards">
-            <div th:each="pet : ${pets}" class="pet-card">
-                <h3 th:text="${pet.name}">Pet Name</h3>
-                <p th:text="'Breed: ' + ${pet.breed}">Breed</p>
-                <p th:text="'Type: ' + ${pet.type}">Type</p>
-                <p th:text="'Age: ' + ${pet.age} + ' years'">Age</p>
-            </div>
-        </div>
-        -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function updateBreeds() {
+            const type = document.getElementById('type').value;
+            const breed1Select = document.getElementById('breed1');
+            const breed2Select = document.getElementById('breed2');
+            breed1Select.innerHTML = ''; // Clear existing options
+            breed2Select.innerHTML = ''; // Clear existing options
 
-        <div th:if="${errorMessage}" class="error-message">
-            <p th:text="${errorMessage}"></p>
-        </div>
+            // Add "None Selected" option
+            const noneOption1 = document.createElement('option');
+            noneOption1.value = '';
+            noneOption1.text = 'None Selected';
+            breed1Select.appendChild(noneOption1);
 
-        <script>
-            function enableEdit() {
-                document.getElementById('editForm').style.display = 'block';
-                document.getElementById('editButton').style.display = 'none';
-                document.querySelector('.clear-profile-button-resc').style.display = 'block';
-            }
+            const noneOption2 = document.createElement('option');
+            noneOption2.value = '';
+            noneOption2.text = 'None Selected';
+            breed2Select.appendChild(noneOption2);
 
-            function loadFile(event) {
-                var image = document.getElementById('profileImage');
-                image.src = URL.createObjectURL(event.target.files[0]);
-                document.getElementById('clearImageFlag').value = 'false';
-            }
+            fetch(`/breeds?type=${type}`)
+                .then(response => response.json())
+                .then(breeds => {
+                    breeds.forEach(breed => {
+                        const option1 = document.createElement('option');
+                        option1.value = breed.breedId;
+                        option1.text = breed.name;
+                        breed1Select.appendChild(option1);
 
-            function clearImage() {
-                var image = document.getElementById('profileImage');
-                image.src = '/images/profile-placeholder.png';
-                document.getElementById('fileInput').value = '';
-                document.getElementById('clearImageFlag').value = 'true';
-            }
+                        const option2 = document.createElement('option');
+                        option2.value = breed.breedId;
+                        option2.text = breed.name;
+                        breed2Select.appendChild(option2);
+                    });
+                })
+                .catch(error => console.error('Error fetching breeds:', error));
+        }
+    
 
-            function updateUsername() { // as user types, updates the username in the profile card
-                var usernameInput = document.getElementById('username');
-                var profileUsername = document.getElementById('profileUsername');
-                profileUsername.textContent = usernameInput.value;
-            }
-        </script>
-    </body>
+        function loadFile(event) {
+            var image = document.getElementById('profileImage');
+            image.src = URL.createObjectURL(event.target.files[0]);
+            document.getElementById('clearImageFlag').value = 'false';
+        }
+
+        function clearImage() {
+            var image = document.getElementById('profileImage');
+            image.src = '/images/profile-placeholder.png';
+            document.getElementById('fileInput').value = '';
+            document.getElementById('clearImageFlag').value = 'true';
+        }
+
+        function updateUsername() { // as user types, updates the username in the profile card
+            var usernameInput = document.getElementById('username');
+            var profileUsername = document.getElementById('profileUsername');
+            profileUsername.textContent = usernameInput.value;
+        }
+
+        function openPetModal(petId) {
+            fetch(`/pet/${petId}`)
+            .then(response => response.json())
+            .then(pet => {
+                document.getElementById('modalPetName').textContent = pet.name;
+                document.getElementById('modalPetImage').src = pet.photoUrl;
+                document.getElementById('modalPetAdoptionStatus').textContent = 'Adoption Status: ' + pet.adoptionStatus;
+                document.getElementById('modalPetFee').textContent = 'Fee: $' + pet.fee;
+                document.getElementById('modalPetType').textContent = 'Type: ' + pet.type;
+                document.getElementById('modalPetBreed1').textContent = 'Breed 1: ' + pet.breed1;
+                if (pet.breed2) {
+                    document.getElementById('modalPetBreed2').textContent = 'Breed 2: ' + pet.breed2;
+                } else {
+                    document.getElementById('modalPetBreed2').style.display = 'none';
+                }
+                document.getElementById('modalPetColor1').textContent = 'Color 1: ' + pet.color1;
+                if (pet.color2) {
+                    document.getElementById('modalPetColor2').textContent = 'Color 2: ' + pet.color2;
+                } else {
+                    document.getElementById('modalPetColor2').style.display = 'none';
+                }
+                if (pet.color3) {
+                    document.getElementById('modalPetColor3').textContent = 'Color 3: ' + pet.color3;
+                } else {
+                    document.getElementById('modalPetColor3').style.display = 'none';
+                }
+                document.getElementById('modalPetLocation').textContent = 'Location: ' + pet.location;
+                document.getElementById('modalPetMaturitySize').textContent = 'Maturity Size: ' + pet.maturitySize;
+                document.getElementById('modalPetAge').textContent = 'Age: ' + pet.age + ' months';
+                document.getElementById('modalPetGender').textContent = 'Gender: ' + pet.gender;
+                document.getElementById('modalPetHealthStatus').textContent = 'Health Status: ' + pet.healthStatus;
+                document.getElementById('modalPetVaccinationStatus').textContent = 'Vaccination Status: ' + pet.vaccinationStatus;
+                document.getElementById('modalPetSterilized').textContent = 'Sterilized: ' + pet.sterilized;
+                document.getElementById('modalPetDewormed').textContent = 'Dewormed: ' + pet.dewormed;
+                document.getElementById('modalPetFurLength').textContent = 'Fur Length: ' + pet.furLength;
+                document.getElementById('modalPetDescription').textContent = 'Description: ' + pet.description;
+                document.getElementById('petModal').style.display = 'block';
+            })
+            .catch(error => console.error('Error fetching pet details:', error));
+    }
+
+        function closePetModal() {
+            document.getElementById('petModal').style.display = 'none';
+        }
+        /*]]>*/
+    </script>
+</body>
 </html>

@@ -14,20 +14,20 @@
             <table>
                 <thead>
                     <tr> <!-- pet attributes -->
-                        <th>petID</h2>
-                        <th>name</h2>
-                        <th>breed</h2>
-                        <th>type</h2>
-                        <th">age</h2>
+                        <th>petID</th>
+                        <th>name</th>
+                        <th>breed</th>
+                        <th>type</th>
+                        <th>age</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="pet : ${pets}"> <!-- pet attributes, intended to link with backend-->
-                        <td th.text="${pet.petID}"></td>
-                        <td th.text="${pet.name}"></td>
-                        <td th.text="${pet.breed}"></td>
-                        <td th.text="${pet.type}"></td>
-                        <td th.text="${pet.age}"></td>
+                        <td th:text="${pet.petID}"></td>
+                        <td th:text="${pet.name}"></td>
+                        <td th:text="${pet.breed}"></td>
+                        <td th:text="${pet.type}"></td>
+                        <td th:text="${pet.age}"></td>
                     </tr>
                 </tbody>
             </table>
@@ -35,5 +35,7 @@
                 No items match your search
             </span>
         </div>
+        
+
     </body>
 </html>
