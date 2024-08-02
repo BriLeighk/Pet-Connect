@@ -6,6 +6,7 @@
     <title>Homepage</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/pets.css}"> <!-- Include pets.css for styling -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
     <link rel="icon" type="image/png" th:href="@{/favicon.png}">
 </head>
@@ -14,6 +15,7 @@
     
     <div class="container">
         <div class="profiles"> <!-- Region for Pet Profile Tiles -->
+
             <div class="search-profiles"> <!-- Search bar -->
                 <form action="#"> <!-- implemented Search bar -->
                     <input type="text" placeholder="Search Profiles" name="search">
@@ -22,17 +24,22 @@
                     </button>
                 </form>
             </div>
-            <div class="pet-cards">
-                <div th:each="pet : ${pets}" class="pet-card">
+
+            <!-- Pet profile cards section -->
+            <div class="pet-cards-container">
+                <div th:each="pet : ${pets}" class="pet-card" th:onclick="'openPetModal(' + ${pet.petId} + ')'">
+                    <img th:src="@{/petImage/{petId}(petId=${pet.petId})}" alt="Pet Image" class="pet-image">
                     <h3 th:text="${pet.name}">Pet Name</h3>
-                    <p th:text="'Breed: ' + ${pet.breed}">Breed</p>
-                    <p th:text="'Type: ' + ${pet.type}">Type</p>
-                    <p th:text="'Age: ' + ${pet.age} + ' years'">Age</p>
-                    <!-- Add more pet details as needed -->
+                    <p th:text="'Adoption Status: ' + ${pet.adoptionStatus}">Adoption Status</p>
+                    <p th:text="'Fee: $' + ${pet.fee}">Fee</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Include pet modal fragment -->
+    <div th:insert="~{pets :: petModal}"></div>
+    <div th:insert="~{pets :: petModalScripts}"></div>
 </body>
 <!-- TODO: create favorites modal (popup on main page on click of icon) -->
 </html>
