@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.wisconsin.databaseclass.pet_connect.entities.Breed;
 import edu.wisconsin.databaseclass.pet_connect.entities.Color;
 import edu.wisconsin.databaseclass.pet_connect.entities.Location;
@@ -227,6 +228,47 @@ public class PetController {
 
         // save pet to database
         petService.savePet(pet);
+        return "redirect:/rescuerDashboard";
+    }
+
+    // endpoint to update (edit) pet
+    @PostMapping("/updatePet")
+    public String updatePet(@RequestParam("petId") int petId,
+                            @RequestParam(value = "name", required = false) String name,
+                            @RequestParam(value = "fee", required = false) Double fee,
+                            @RequestParam(value = "adoptionStatus", required = false) String adoptionStatus,
+                            @RequestParam(value = "description", required = false) String description,
+                            @RequestParam(value = "maturitySize", required = false) Integer maturitySize,
+                            @RequestParam(value = "age", required = false) Integer age,
+                            @RequestParam(value = "healthStatus", required = false) Integer healthStatus,
+                            @RequestParam(value = "vaccinationStatus", required = false) Integer vaccinationStatus,
+                            @RequestParam(value = "sterilized", required = false) Integer sterilized,
+                            @RequestParam(value = "dewormed", required = false) Integer dewormed,
+                            @RequestParam(value = "file", required = false) MultipartFile file,
+                            @RequestParam("clearImageFlag") boolean clearImageFlag) {
+        Pet pet = petService.getPetById(petId);
+        if (pet != null) {
+            if (name != null) pet.setName(name);
+            if (fee != null) pet.setFee(fee);
+            if (adoptionStatus != null) pet.setAdoptionStatus(adoptionStatus);
+            if (description != null) pet.setDescription(description);
+            if (maturitySize != null) pet.setMaturitySize(maturitySize);
+            if (age != null) pet.setAge(age);
+            if (healthStatus != null) pet.setHealthStatus(healthStatus);
+            if (vaccinationStatus != null) pet.setVaccinationStatus(vaccinationStatus);
+            if (sterilized != null) pet.setSterilized(sterilized);
+            if (dewormed != null) pet.setDewormed(dewormed);
+            if (clearImageFlag) {
+                pet.setPhotos(null);
+            } else if (file != null && !file.isEmpty()) {
+                try {
+                    pet.setPhotos(file.getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            petService.savePet(pet);
+        }
         return "redirect:/rescuerDashboard";
     }
 }

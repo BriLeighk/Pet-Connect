@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/pets.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <!-- Add Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display on page -->
@@ -56,6 +58,7 @@
                 <p th:text="'Adoption Status: ' + ${pet.adoptionStatus}">Adoption Status</p> <!-- Adoption Status -->
                 <p th:text="'Fee: $' + ${pet.fee}">Fee</p> <!-- Fee -->
                 <i class="fas fa-trash delete-pet-icon" th:onclick="'deletePet(' + ${pet.petId} + ');event.stopPropagation();'"></i> <!-- Delete icon -->
+                <button type="button" th:onclick="'openEditPetModal(' + ${pet.petId} + ')'" class="edit-pet-button"><i class="fas fa-edit"></i></button>
             </div>
         </div>
     </div>
@@ -211,6 +214,89 @@
         </div>
     </div>
 
+    <!-- Edit Pet Modal -->
+    <div id="editPetModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditPetModal()">&times;</span>
+            <h2>Edit Pet</h2>
+            <form id="editPetForm" method="post" action="/updatePet" enctype="multipart/form-data">
+                <input type="hidden" name="petId" id="editPetId">
+                <div>
+                    <label for="editPetName">Name:</label>
+                    <input type="text" id="editPetName" name="name">
+                </div>
+                <div>
+                    <label for="editPetFee">Fee:</label>
+                    <input type="number" id="editPetFee" name="fee" step="0.01">
+                </div>
+                <div>
+                    <label for="editPetAdoptionStatus">Adoption Status:</label>
+                    <select id="editPetAdoptionStatus" name="adoptionStatus">
+                        <option value="Available">Available</option>
+                        <option value="Adopted">Adopted</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="editPetDescription">Description:</label>
+                    <textarea id="editPetDescription" name="description" rows="4" cols="50"></textarea>
+                </div>
+                <div>
+                    <label for="editPetMaturitySize">Maturity Size:</label>
+                    <select id="editPetMaturitySize" name="maturitySize">
+                        <option value="0">Not Specified</option>
+                        <option value="1">Small</option>
+                        <option value="2">Medium</option>
+                        <option value="3">Large</option>
+                        <option value="4">Extra Large</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="editPetAge">Age (months):</label>
+                    <input type="number" id="editPetAge" name="age">
+                </div>
+                <div>
+                    <label for="editPetHealthStatus">Health Status:</label>
+                    <select id="editPetHealthStatus" name="healthStatus">
+                        <option value="0">Not Specified</option>
+                        <option value="1">Healthy</option>
+                        <option value="2">Minor Injury</option>
+                        <option value="3">Serious Injury</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="editPetVaccinationStatus">Vaccination Status:</label>
+                    <select id="editPetVaccinationStatus" name="vaccinationStatus">
+                        <option value="3">Not Sure</option>
+                        <option value="1">Vaccinated</option>
+                        <option value="2">Not Vaccinated</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="editPetSterilized">Sterilized:</label>
+                    <select id="editPetSterilized" name="sterilized">
+                        <option value="3">Not Sure</option>
+                        <option value="1">Sterilized</option>
+                        <option value="2">Not Sterilized</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="editPetDewormed">Dewormed:</label>
+                    <select id="editPetDewormed" name="dewormed">
+                        <option value="3">Not Sure</option>
+                        <option value="1">Dewormed</option>
+                        <option value="2">Not Dewormed</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="editPetPhoto">Photo:</label>
+                    <input type="file" id="editPetPhoto" name="file" accept="image/*">
+                    <input type="hidden" id="editClearImageFlag" name="clearImageFlag" value="false">
+                </div>
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
     <!-- petModalScripts fragment from pets.html -->
     <div th:insert="~{pets :: petModalScripts}"></div>
 
@@ -290,6 +376,30 @@
                 })
                 .catch(error => console.error('Error deleting pet:', error));
             }
+        }
+
+        function openEditPetModal(petId) {
+            fetch(`/pet/${petId}`)
+                .then(response => response.json())
+                .then(pet => {
+                    document.getElementById('editPetId').value = pet.petId;
+                    document.getElementById('editPetName').value = pet.name;
+                    document.getElementById('editPetFee').value = pet.fee;
+                    document.getElementById('editPetAdoptionStatus').value = pet.adoptionStatus;
+                    document.getElementById('editPetDescription').value = pet.description;
+                    document.getElementById('editPetMaturitySize').value = pet.maturitySize;
+                    document.getElementById('editPetAge').value = pet.age;
+                    document.getElementById('editPetHealthStatus').value = pet.healthStatus;
+                    document.getElementById('editPetVaccinationStatus').value = pet.vaccinationStatus;
+                    document.getElementById('editPetSterilized').value = pet.sterilized;
+                    document.getElementById('editPetDewormed').value = pet.dewormed;
+                    document.getElementById('editPetModal').style.display = 'block';
+                })
+                .catch(error => console.error('Error fetching pet details:', error));
+        }
+
+        function closeEditPetModal() {
+            document.getElementById('editPetModal').style.display = 'none';
         }
         /*]]>*/
     </script>

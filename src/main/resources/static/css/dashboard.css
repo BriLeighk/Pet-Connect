@@ -238,8 +238,25 @@ form input[type="text"]:hover, form input[type="number"]:hover {
     color: darkred;
     cursor: pointer;
     position: relative;
-    left: 45%;
-    font-size: 1.2em;
+    bottom: 0px; /* Adjust as needed to position at the top */
+    left: 40px;
+    font-size: 1em;
+}
+
+.edit-pet-button {
+    background-color: transparent; /* Make background transparent */
+    border: none;
+    color: #b08968; /* Set icon color */
+    position: absolute; /* Absolute positioning */
+    top: 5px; /* Adjust as needed to position at the top */
+    left: 5px; /* Adjust as needed to position at the left */
+    font-size: 1em; /* Adjust icon size */
+    cursor: pointer;
+    transition: color 0.6s ease-in-out;
+}
+
+.edit-pet-button:hover {
+    color: #60402b; /* Change color on hover */
 }
 
 .delete-pet-icon:hover {
