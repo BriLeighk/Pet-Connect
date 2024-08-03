@@ -169,7 +169,7 @@ public class UserController {
     }
 
     @PostMapping("/convertToRescuer")
-    public String convertToRescuer(@RequestParam("rescuerId") int rescuerId, HttpSession session, Model model) {
+    public String convertToRescuer(@RequestParam("rescuerId") String rescuerId, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login"; // Redirect to login if user is not in session

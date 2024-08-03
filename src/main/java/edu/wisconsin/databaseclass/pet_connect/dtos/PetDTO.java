@@ -2,7 +2,7 @@ package edu.wisconsin.databaseclass.pet_connect.dtos;
 
 // PetDTO class to handle pet data
 public class PetDTO {
-    private int petId;
+    private String petId;
     private String name;
     private String type;
     private String breed1;
@@ -25,11 +25,11 @@ public class PetDTO {
     private String photoUrl;
 
     // Getters and setters
-    public int getPetId() {
+    public String getPetId() {
         return petId;
     }
 
-    public void setPetId(int petId) {
+    public void setPetId(String petId) {
         this.petId = petId;
     }
 
@@ -186,7 +186,7 @@ public class PetDTO {
     }
 
     public String getPhotoUrl() {
-        return photoUrl;
+        return photoUrl != null ? photoUrl : "/images/pet-placeholder.png";
     }
 
     public void setPhotoUrl(String photoUrl) {

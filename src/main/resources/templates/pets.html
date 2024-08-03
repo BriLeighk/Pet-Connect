@@ -3,6 +3,7 @@
         <title>Filter</title>
         <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
         <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/pets.css}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
         <link rel="icon" type="image/png" th:href="@{/favicon.png}">
         <style>
@@ -28,7 +29,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="pet : ${pets}"> <!-- pet attributes, intended to link with backend-->
+                    <tr th:each="pet : ${pets}" th:data-pet-id="${pet.petId}"> <!-- pet attributes, intended to link with backend-->
                         <td th:text="${pet.petID}"></td>
                         <td th:text="${pet.name}"></td>
                         <td th:text="${pet.breed}"></td>
@@ -75,52 +76,60 @@
         <div th:fragment="petModalScripts">
             <script th:inline="javascript">
                 /*<![CDATA[*/
-
+        
                 // formatting for opening the pet modal to display pet information
                 function openPetModal(petId) {
+                    console.log("openPetModal function is loaded");
                     fetch(`/pet/${petId}`)
-                    .then(response => response.json())
-                    .then(pet => {
-                        document.getElementById('modalPetName').innerHTML = pet.name;
-                        document.getElementById('modalPetImage').src = pet.photoUrl;
-                        document.getElementById('modalPetAdoptionStatus').innerHTML = 'Adoption Status: <span class="modal-value">' + pet.adoptionStatus + '</span>';
-                        document.getElementById('modalPetFee').innerHTML = 'Fee: <span class="modal-value">$' + pet.fee + '</span>';
-                        document.getElementById('modalPetType').innerHTML = 'Type: <span class="modal-value">' + pet.type + '</span>';
-                        document.getElementById('modalPetBreed1').innerHTML = 'Breed 1: <span class="modal-value">' + pet.breed1 + '</span>';
-                        if (pet.breed2) {
-                            document.getElementById('modalPetBreed2').innerHTML = 'Breed 2: <span class="modal-value">' + pet.breed2 + '</span>';
-                            document.getElementById('modalPetBreed2').style.display = 'block';
-                        } else {
-                            document.getElementById('modalPetBreed2').style.display = 'none';
-                        }
-                        document.getElementById('modalPetColor1').innerHTML = 'Color 1: <span class="modal-value">' + pet.color1 + '</span>';
-                        if (pet.color2) {
-                            document.getElementById('modalPetColor2').innerHTML = 'Color 2: <span class="modal-value">' + pet.color2 + '</span>';
-                            document.getElementById('modalPetColor2').style.display = 'block';
-                        } else {
-                            document.getElementById('modalPetColor2').style.display = 'none';
-                        }
-                        if (pet.color3) {
-                            document.getElementById('modalPetColor3').innerHTML = 'Color 3: <span class="modal-value">' + pet.color3 + '</span>';
-                            document.getElementById('modalPetColor3').style.display = 'block';
-                        } else {
-                            document.getElementById('modalPetColor3').style.display = 'none';
-                        }
-                        document.getElementById('modalPetLocation').innerHTML = 'Location: <span class="modal-value">' + pet.location + '</span>';
-                        document.getElementById('modalPetMaturitySize').innerHTML = 'Maturity Size: <span class="modal-value">' + pet.maturitySize + '</span>';
-                        document.getElementById('modalPetAge').innerHTML = 'Age: <span class="modal-value">' + pet.age + ' months</span>';
-                        document.getElementById('modalPetGender').innerHTML = 'Gender: <span class="modal-value">' + pet.gender + '</span>';
-                        document.getElementById('modalPetHealthStatus').innerHTML = 'Health Status: <span class="modal-value">' + pet.healthStatus + '</span>';
-                        document.getElementById('modalPetVaccinationStatus').innerHTML = 'Vaccination Status: <span class="modal-value">' + pet.vaccinationStatus + '</span>';
-                        document.getElementById('modalPetSterilized').innerHTML = 'Sterilized: <span class="modal-value">' + pet.sterilized + '</span>';
-                        document.getElementById('modalPetDewormed').innerHTML = 'Dewormed: <span class="modal-value">' + pet.dewormed + '</span>';
-                        document.getElementById('modalPetFurLength').innerHTML = 'Fur Length: <span class="modal-value">' + pet.furLength + '</span>';
-                        document.getElementById('modalPetDescription').innerHTML = 'Description: <span class="modal-value">' + pet.description + '</span>';
-                        document.getElementById('petModal').style.display = 'block';
-                    })
-                    .catch(error => console.error('Error fetching pet details:', error));
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(pet => {
+                            document.getElementById('modalPetName').innerHTML = pet.name;
+                            document.getElementById('modalPetImage').src = pet.photoUrl;
+                            document.getElementById('modalPetAdoptionStatus').innerHTML = 'Adoption Status: <span class="modal-value">' + pet.adoptionStatus + '</span>';
+                            document.getElementById('modalPetFee').innerHTML = 'Fee: <span class="modal-value">$' + pet.fee + '</span>';
+                            document.getElementById('modalPetType').innerHTML = 'Type: <span class="modal-value">' + pet.type + '</span>';
+                            document.getElementById('modalPetBreed1').innerHTML = 'Breed 1: <span class="modal-value">' + pet.breed1 + '</span>';
+                            if (pet.breed2) {
+                                document.getElementById('modalPetBreed2').innerHTML = 'Breed 2: <span class="modal-value">' + pet.breed2 + '</span>';
+                                document.getElementById('modalPetBreed2').style.display = 'block';
+                            } else {
+                                document.getElementById('modalPetBreed2').style.display = 'none';
+                            }
+                            document.getElementById('modalPetColor1').innerHTML = 'Color 1: <span class="modal-value">' + pet.color1 + '</span>';
+                            if (pet.color2) {
+                                document.getElementById('modalPetColor2').innerHTML = 'Color 2: <span class="modal-value">' + pet.color2 + '</span>';
+                                document.getElementById('modalPetColor2').style.display = 'block';
+                            } else {
+                                document.getElementById('modalPetColor2').style.display = 'none';
+                            }
+                            if (pet.color3) {
+                                document.getElementById('modalPetColor3').innerHTML = 'Color 3: <span class="modal-value">' + pet.color3 + '</span>';
+                                document.getElementById('modalPetColor3').style.display = 'block';
+                            } else {
+                                document.getElementById('modalPetColor3').style.display = 'none';
+                            }
+                            document.getElementById('modalPetLocation').innerHTML = 'Location: <span class="modal-value">' + pet.location + '</span>';
+                            document.getElementById('modalPetMaturitySize').innerHTML = 'Maturity Size: <span class="modal-value">' + pet.maturitySize + '</span>';
+                            document.getElementById('modalPetAge').innerHTML = 'Age: <span class="modal-value">' + pet.age + ' months</span>';
+                            document.getElementById('modalPetGender').innerHTML = 'Gender: <span class="modal-value">' + pet.gender + '</span>';
+                            document.getElementById('modalPetHealthStatus').innerHTML = 'Health Status: <span class="modal-value">' + pet.healthStatus + '</span>';
+                            document.getElementById('modalPetVaccinationStatus').innerHTML = 'Vaccination Status: <span class="modal-value">' + pet.vaccinationStatus + '</span>';
+                            document.getElementById('modalPetSterilized').innerHTML = 'Sterilized: <span class="modal-value">' + pet.sterilized + '</span>';
+                            document.getElementById('modalPetDewormed').innerHTML = 'Dewormed: <span class="modal-value">' + pet.dewormed + '</span>';
+                            document.getElementById('modalPetFurLength').innerHTML = 'Fur Length: <span class="modal-value">' + pet.furLength + '</span>';
+                            document.getElementById('modalPetDescription').innerHTML = 'Description: <span class="modal-value">' + pet.description + '</span>';
+                            document.getElementById('petModal').style.display = 'block';
+                        })
+                        .catch(error => {
+                            console.error('Error fetching pet details:', error);
+                        });
                 }
-
+        
                 // function to close pet modal
                 function closePetModal() {
                     document.getElementById('petModal').style.display = 'none';

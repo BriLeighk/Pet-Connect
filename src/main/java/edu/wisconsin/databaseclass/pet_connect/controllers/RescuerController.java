@@ -28,11 +28,11 @@ public class RescuerController {
         if (user == null || user.getRescuer() == null) {
             return "redirect:/login"; // Redirect to login if user is not in session or not a rescuer
         }
-        Integer rescuerId = user.getRescuer().getRescuerId();
+        String rescuerId = user.getRescuer().getRescuerId();
         logger.info("Rescuer ID: " + rescuerId);
-        model.addAttribute("rescuerId", rescuerId);
+        model.addAttribute("rescuerId", rescuerId.toString());
         model.addAttribute("user", user); // Add user to the model
-        model.addAttribute("pets", petService.getPetsByRescuer(rescuerId)); // Add pets to the model
+        model.addAttribute("pets", petService.getPetsByRescuer(user.getRescuer())); // Add pets to the model
         if (user.getProfileImage() == null) {
             model.addAttribute("profileImage", "/images/profile-placeholder.png");
         } else {

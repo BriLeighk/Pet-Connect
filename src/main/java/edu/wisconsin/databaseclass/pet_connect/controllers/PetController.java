@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.wisconsin.databaseclass.pet_connect.entities.Breed;
 import edu.wisconsin.databaseclass.pet_connect.entities.Color;
 import edu.wisconsin.databaseclass.pet_connect.entities.Location;
@@ -23,13 +22,13 @@ import edu.wisconsin.databaseclass.pet_connect.services.PetService;
 import edu.wisconsin.databaseclass.pet_connect.dtos.PetDTO;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @Controller
 public class PetController {
-
-    private static final Logger logger = Logger.getLogger(PetController.class.getName());
 
     @Autowired
     private PetService petService;
@@ -41,11 +40,6 @@ public class PetController {
         List<Breed> catBreeds = petService.getBreedsByType(2);
         List<Color> colors = petService.getAllColors();
         List<Location> locations = petService.getAllLocations();
-
-        logger.info("Dog Breeds: " + dogBreeds);
-        logger.info("Cat Breeds: " + catBreeds);
-        logger.info("Colors: " + colors);
-        logger.info("Locations: " + locations);
 
         model.addAttribute("dogBreeds", dogBreeds);
         model.addAttribute("catBreeds", catBreeds);
@@ -64,18 +58,25 @@ public class PetController {
     // endpoint to get pet image
     @GetMapping("/petImage/{petId}")
     @ResponseBody
-    public ResponseEntity<byte[]> getPetImage(@PathVariable int petId) {
+    public ResponseEntity<byte[]> getPetImage(@PathVariable String petId) {
         Pet pet = petService.getPetById(petId);
         if (pet != null && pet.getPhotos() != null) {
             return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(pet.getPhotos());
+        } else {
+            try {
+                byte[] placeholderImage = Files.readAllBytes(Paths.get("src/main/resources/static/images/pet-placeholder.png"));
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(placeholderImage);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
         }
-        return ResponseEntity.notFound().build();
     }
 
     // endpoint to get pet by id
     @GetMapping("/pet/{petId}")
     @ResponseBody
-    public PetDTO getPetById(@PathVariable int petId) {
+    public ResponseEntity<PetDTO> getPetById(@PathVariable String petId) {
         Pet pet = petService.getPetById(petId);
         if (pet != null) {
             PetDTO petDTO = new PetDTO();
@@ -106,14 +107,14 @@ public class PetController {
             petDTO.setFurLength(getFurLengthString(pet.getFurLength()));
             petDTO.setDescription(pet.getDescription() != null ? pet.getDescription() : "");
             petDTO.setPhotoUrl("/petImage/" + pet.getPetId());
-            return petDTO;
+            return ResponseEntity.ok(petDTO);
         }
-        return null;
-    }
 
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
     // endpoint to delete pet by id
     @DeleteMapping("/deletePet/{petId}")
-    public ResponseEntity<Void> deletePet(@PathVariable Integer petId) {
+    public ResponseEntity<Void> deletePet(@PathVariable String petId) {
         try {
             petService.deletePetById(petId);
             return ResponseEntity.ok().build();
@@ -191,7 +192,7 @@ public class PetController {
                           @RequestParam("vaccinationStatus") int vaccinationStatus, @RequestParam("sterilized") int sterilized,
                           @RequestParam("dewormed") int dewormed, @RequestParam(value = "fee", defaultValue = "0") double fee,
                           @RequestParam("furLength") int furLength, @RequestParam("location") int locationId,
-                          @RequestParam("rescuerId") int rescuerId, @RequestParam("description") String description, // Add description
+                          @RequestParam("rescuerId") String rescuerId, @RequestParam("description") String description, // Add description
                           @RequestParam("photos") MultipartFile[] photos) {
         Pet pet = new Pet();
         pet.setName(name);
@@ -233,7 +234,7 @@ public class PetController {
 
     // endpoint to update (edit) pet
     @PostMapping("/updatePet")
-    public String updatePet(@RequestParam("petId") int petId,
+    public String updatePet(@RequestParam("petId") String petId,
                             @RequestParam(value = "name", required = false) String name,
                             @RequestParam(value = "fee", required = false) Double fee,
                             @RequestParam(value = "adoptionStatus", required = false) String adoptionStatus,

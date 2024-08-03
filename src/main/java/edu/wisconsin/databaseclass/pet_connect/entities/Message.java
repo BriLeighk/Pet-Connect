@@ -10,7 +10,6 @@ public class Message {
 
     // mark message_ID as the Identifier
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int message_ID;
 
     @ManyToOne

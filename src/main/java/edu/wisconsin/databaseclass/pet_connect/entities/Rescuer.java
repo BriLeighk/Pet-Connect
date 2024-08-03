@@ -8,7 +8,7 @@ import java.util.List;
 public class Rescuer {
 
     @Id
-    private int rescuerId;
+    private String rescuerId;
 
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)
@@ -19,11 +19,11 @@ public class Rescuer {
 
     // getters and setters
 
-    public int getRescuerId() {
+    public String getRescuerId() {
         return rescuerId;
     }
 
-    public void setRescuerId(int rescuerId) {
+    public void setRescuerId(String rescuerId) {
         this.rescuerId = rescuerId;
     }
 

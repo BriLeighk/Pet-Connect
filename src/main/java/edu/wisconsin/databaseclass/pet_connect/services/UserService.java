@@ -94,7 +94,7 @@ public class UserService {
         return userRepository.findByEmail(email) != null;
     }
 
-    public boolean convertToRescuer(User user, int rescuerId) {
+    public boolean convertToRescuer(User user, String rescuerId) {
         Rescuer rescuer = rescuerRepository.findById(rescuerId).orElse(null);
         if (rescuer == null || rescuer.getUser() != null) {
             return false; // Invalid rescuerId or already associated
@@ -103,6 +103,7 @@ public class UserService {
         rescuer.setUser(user);
         userRepository.save(user);
         rescuerRepository.save(rescuer);
+        user.setRole("RESCUER");
         return true;
     }
 

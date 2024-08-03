@@ -3,12 +3,13 @@ package edu.wisconsin.databaseclass.pet_connect.services;
 import edu.wisconsin.databaseclass.pet_connect.entities.Breed;
 import edu.wisconsin.databaseclass.pet_connect.entities.Color;
 import edu.wisconsin.databaseclass.pet_connect.entities.Location;
+import edu.wisconsin.databaseclass.pet_connect.entities.Rescuer;
 import edu.wisconsin.databaseclass.pet_connect.repositories.BreedRepository;
 import edu.wisconsin.databaseclass.pet_connect.repositories.ColorRepository;
 import edu.wisconsin.databaseclass.pet_connect.repositories.LocationRepository;
+import edu.wisconsin.databaseclass.pet_connect.repositories.RescuerRepository;
 import edu.wisconsin.databaseclass.pet_connect.utils.CsvReader;
 import jakarta.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,23 @@ public class DatabasePopulatorService {
     @Autowired
     private LocationRepository locationRepository;
 
+    @Autowired
+    private RescuerRepository rescuerRepository;
+
     @PostConstruct
     public void populateDatabase() {
-        populateBreeds();
-        populateColors();
-        populateLocations();
+        if (breedRepository.count() == 0) {
+            populateBreeds();
+        }
+        if (colorRepository.count() == 0) {
+            populateColors();
+        }
+        if (locationRepository.count() == 0) {
+            populateLocations();
+        }
+        if (rescuerRepository.count() == 0) {
+            populateRescuers();
+        }
     }
 
     private void populateBreeds() {
@@ -46,5 +59,10 @@ public class DatabasePopulatorService {
     private void populateLocations() {
         List<Location> locations = CsvReader.readLocationsCsv("/static/StateLabels.csv");
         locationRepository.saveAll(locations);
+    }
+
+    private void populateRescuers() {
+        List<Rescuer> rescuers = CsvReader.readRescuersCsv("/static/RescuerLabels.csv");
+        rescuerRepository.saveAll(rescuers);
     }
 }
