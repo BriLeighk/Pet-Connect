@@ -1,6 +1,6 @@
 <!-- Main Header Fragment --- Styled in layout.css -->
 
- <div th:fragment="header">
+<div th:fragment="header">
     <header> <!-- Navigation Bar -->
 
         <div class="left-icons-container">
@@ -24,7 +24,18 @@
                 </div>
             </div>
            
-            <i class="fas fa-heart"></i> <!-- favorites icon -->
+            <i class="fas fa-heart" id="favoritesIcon"></i> <!-- favorites icon -->
         </div>
     </header>
- </div>
+</div>
+
+<!-- Favorites Popup -->
+<div id="favoritesPopup" class="favorites-popup">
+    <div class="favorites-popup-content">
+        <span class="close">&times;</span>
+        <h2>Your Favorites</h2>
+        <ul id="favoritesList">
+            <!-- Favorite pet profiles will be dynamically added here -->
+        </ul>
+    </div>
+</div>

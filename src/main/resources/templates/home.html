@@ -44,6 +44,17 @@
     <div th:insert="~{pets :: petModal}"></div>
     <div th:insert="~{pets :: petModalScripts}"></div>
 
+    <!-- Favorites Popup -->
+    <div id="favoritesPopup" class="favorites-popup">
+        <div class="favorites-popup-content">
+            <span class="close">&times;</span>
+            <h2>Your Favorites</h2>
+            <ul id="favoritesList">
+                <!-- Favorite pet profiles will be dynamically added here -->
+            </ul>
+        </div>
+    </div>
+
     <!-- JavaScript functions -->
     <script th:inline="javascript">
         /*<![CDATA[*/
@@ -76,6 +87,25 @@
                     const petId = this.getAttribute('data-pet-id');
                     openPetModal(petId);
                 });
+            });
+
+            // Favorites popup functionality
+            const favoritesIcon = document.getElementById('favoritesIcon');
+            const favoritesPopup = document.getElementById('favoritesPopup');
+            const closeBtn = document.querySelector('.favorites-popup .close');
+
+            favoritesIcon.addEventListener('click', function() {
+                favoritesPopup.style.display = 'block';
+            });
+
+            closeBtn.addEventListener('click', function() {
+                favoritesPopup.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target == favoritesPopup) {
+                    favoritesPopup.style.display = 'none';
+                }
             });
         });
 
@@ -134,5 +164,4 @@
         /*]]>*/
     </script>
 </body>
-<!-- TODO: create favorites modal (popup on main page on click of icon) -->
 </html>
