@@ -1,28 +1,41 @@
 <!DOCTYPE html>
-
-<!-- CREATE-ACCOUNT STRUCTURE TO-BE-IMPLEMENTED -->
+<!-- REGISTER STRUCTURE -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Register</title>
+    <title>Create Account</title>
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <link rel="icon" type="image/png" th:href="@{/favicon.png}">
+
 </head>
 <body>
-<h2>Register</h2>
-<form th:action="@{/register}" th:object="${user}" method="post">
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" th:field="*{username}">
+    <h1 class="home-title"><a href="/">Pet Connect</a></h1> <!-- links to homepage -->
+    <div class="container">
+        <div class="wrapper">
+            <div class="title"><span>Create Account</span></div>
+            <form action="#" th:action="@{/register}" method="post"> <!-- thymeleaf register action + CRUD method -->
+                <div th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></div>
+                <div class="row">
+                    <i class="fas fa-font"></i>
+                    <input type="text" name="username" placeholder="Username" required> <!-- user must enter email -->
+                </div>
+                <div class="row">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="email" placeholder="Email" required> <!-- user must enter email -->
+                </div>
+                <div class="row">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="password" required> <!-- user must enter password -->
+                </div>
+                
+                <div class="row button">
+                    <input type="submit" value="Create Account">
+                </div>
+                <div class="signup-link">Already have an account? <a href="/login">Login</a></div>
+                
+            </form>
+        </div>
     </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" th:field="*{email}">
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" th:field="*{password}">
-    </div>
-    <div>
-        <button type="submit">Register</button>
-    </div>
-</form>
 </body>
 </html>

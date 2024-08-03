@@ -9,11 +9,11 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public class FavoritesId implements Serializable {
     private int userId;
-    private int petId;
+    private String petId;
 
     public FavoritesId() {}
 
-    public FavoritesId(int userId, int petId) {
+    public FavoritesId(int userId, String petId) {
         this.userId = userId;
         this.petId = petId;
     }
@@ -26,11 +26,11 @@ public class FavoritesId implements Serializable {
         this.userId = userId;
     }
 
-    public int getPetId() {
+    public String getPetId() {
         return petId;
     }
 
-    public void setPetId(int petId) {
+    public void setPetId(String petId) {
         this.petId = petId;
     }
 

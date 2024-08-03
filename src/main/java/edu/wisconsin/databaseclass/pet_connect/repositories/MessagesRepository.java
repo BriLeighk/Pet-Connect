@@ -8,6 +8,3 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MessagesRepository extends JpaRepository<Messages, MessagesId> {
 }
-
-
-

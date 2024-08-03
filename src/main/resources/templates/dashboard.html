@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!-- User Dashboard -->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>User Dashboard</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+        <link rel="icon" type="image/png" th:href="@{/favicon.png}">
+    </head>
+    <body>
+        <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
+        <h1>User Dashboard</h1>
+        
+        <div class="container">
+            <div class="profile-card">
+                <img id="profileImage" th:src="${profileImage}" alt="Profile Image">
+                <button type="button" class="clear-profile-button" onclick="clearImage()" style="display: none;">X</button>
+                <h2 id="profileUsername" th:text="${user.username}">John Doe</h2>
+                <p th:text="${user.email}">john.doe@example.com</p>
+                <button id="editButton" onclick="enableEdit()">Edit</button>
+                
+                <div id="editForm" style="display: none;">
+                    <form method="post" enctype="multipart/form-data" action="/updateProfile">
+                        <div>
+                            <label>Username:</label>
+                            <input type="text" id="username" name="username" th:value="${user.username}" oninput="updateUsername()">
+                        </div>
+                        <div>
+                            <label>Profile Image:</label>
+                            <input type="file" id="fileInput" name="file" accept="image/*" onchange="loadFile(event)" style="display: none;">
+                            <button type="button" class="custom-file-button" onclick="document.getElementById('fileInput').click();">
+                                <i class="fas fa-upload"></i> Choose File
+                            </button>
+                            <input type="hidden" id="clearImageFlag" name="clearImageFlag" value="false">
+                        </div>
+                        <input type="hidden" name="userId" th:value="${user.userId}">
+                        <button type="submit" class="save-changes-button" style="margin-left: 0;">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="convert-to-rescuer-container">
+            <h2>Convert to Rescuer</h2>
+            <div class="rescuer-card">
+                <form th:action="@{/convertToRescuer}" method="post" id="rescuer-form">
+                    <p id="maintext">Are you a licensed pet <strong>rescuer</strong>? Enter your unique Rescuer ID below to see if
+                        you qualify for a rescuer account. 
+                    </p>
+                    <li id="subtext">On valid entry of a registered rescuer ID, your account will automatically be migrated to a rescuer
+                        account, where you will be navigated to your new rescuer dashboard.
+                    </li>
+                    <label for="rescuerId">Enter Rescuer ID:</label>
+                    <input type="text" id="rescuerId" name="rescuerId" required>
+                    <button type="submit" id="convert-button">Convert</button>
+                </form>
+            </div>    
+        </div>
+
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <script>
+            function enableEdit() {
+                document.getElementById('editForm').style.display = 'block';
+                document.getElementById('editButton').style.display = 'none';
+                document.querySelector('.clear-profile-button').style.display = 'block';
+            }
+
+            function loadFile(event) {
+                var image = document.getElementById('profileImage');
+                image.src = URL.createObjectURL(event.target.files[0]);
+                document.getElementById('clearImageFlag').value = 'false';
+            }
+
+            function clearImage() {
+                var image = document.getElementById('profileImage');
+                image.src = '/images/profile-placeholder.png';
+                document.getElementById('fileInput').value = '';
+                document.getElementById('clearImageFlag').value = 'true';
+            }
+
+            function updateUsername() { // as user types, updates the username in the profile card
+                var usernameInput = document.getElementById('username');
+                var profileUsername = document.getElementById('profileUsername');
+                profileUsername.textContent = usernameInput.value;
+            }
+        </script>
+    </body>
+</html>

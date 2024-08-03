@@ -1,19 +1,36 @@
 <!DOCTYPE html>
-
-<!-- LOGIN STRUCTURE TO-BE-IMPLEMENTED -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <link rel="icon" type="image/png" th:href="@{/favicon.png}">
 </head>
 <body>
-    <h1>Login</h1>
-    <form th:action="@{/login}" method="post"> <!-- Using Spring Security -->
-        <!-- Add Input Email -->
-        <input name="username" type="text" placeholder="Username">
-        <input name="password" type="text" placeholder="Password">     
-    </form>
-
-    <a href="/">Main Page</a>
+    <h1 class="home-title"><a href="/">Pet Connect</a></h1> <!-- Navigation to home page on click -->
+    <div class="container">
+        <div class="wrapper">
+            <div class="title"><span>Login</span></div>
+            <form th:action="@{/perform_login}" method="post"> <!-- performs post CRUD operation on login attempt (checks validity of credentials) -->
+                <div th:if="${errorMessage}" class="error-message"> <!-- on-screen error message on invalid login credentials -->
+                    <p th:text="${errorMessage}"></p>
+                </div>
+                <div class="row">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="email" placeholder="Email" required> <!-- user must enter email -->
+                </div>
+                <div class="row">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="password" required> <!-- user must enter password -->
+                </div>
+                <div class="pass"><a href="#">Forgot Password</a></div> <!-- TODO: implement forgot password handling -->
+                <div class="row button">
+                    <input type="submit" value="Login">
+                </div>
+                <div class="signup-link">Don't have an account? <a href="/register">Signup now</a></div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

@@ -30,4 +30,3 @@ public class MessageService {
         messageRepository.deleteById(messageId);
     }
 }
-

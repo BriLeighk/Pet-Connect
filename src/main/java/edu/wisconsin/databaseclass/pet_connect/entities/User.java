@@ -1,23 +1,20 @@
 package edu.wisconsin.databaseclass.pet_connect.entities;
 
-
 import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user")
 public class User {
 
-    // marked with ID and GeneratedValue as an identifier
-    @Id
+    @Id // denote as PK
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int user_ID;
+    private int user_ID; // type INT
 
-    @Column(nullable = false)
-    private String username;
+    @Column(nullable = false) // Not null
+    private String username; // type varchar(255)
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true) // can uniquely identify user
     private String email;
 
     @Column(nullable = false)
@@ -26,12 +23,20 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    // not all users are rescuers so it is nullable, but each rescuerId is unique to the rescuer
-    @Column(nullable = true, unique = true) 
-    private Integer rescuerId;
-
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @Lob // indicate as long blob type
+    @Column(name = "profile_image", columnDefinition = "LONGBLOB")
+    private byte[] profileImage;
+
+    @OneToOne(mappedBy = "user")
+    private Rescuer rescuer;
+
+    @PrePersist // stores current date/time in database on creation of user record
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
     // getters and setters
 
@@ -59,5 +64,43 @@ public class User {
         this.email = email;
     }
 
-    // other getters and setters
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public byte[] getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public Rescuer getRescuer() {
+        return rescuer;
+    }
+
+    public void setRescuer(Rescuer rescuer) {
+        this.rescuer = rescuer;
+    }
 }
