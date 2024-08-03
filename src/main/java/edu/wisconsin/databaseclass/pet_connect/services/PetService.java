@@ -85,4 +85,16 @@ public class PetService {
     public List<Pet> getAllPets() {
         return petRepository.findAll();
     }
+
+    public List<Pet> getPetsByType(int type) {
+        return petRepository.findByType(type);
+    }
+
+    public List<Pet> getPetsByBreed(int breedId) {
+        return petRepository.findByBreed1OrBreed2(breedId, breedId);
+    }
+
+    public List<Pet> getPetsByAdoptionStatus(String adoptionStatus) {
+        return petRepository.findByAdoptionStatusContainingIgnoreCase(adoptionStatus);
+    }
 }

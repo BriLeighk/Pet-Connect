@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface BreedRepository extends JpaRepository<Breed, Integer> {
     List<Breed> findByType(int type);
+    List<Breed> findAll();
+    Breed findByName(String name);
 }
