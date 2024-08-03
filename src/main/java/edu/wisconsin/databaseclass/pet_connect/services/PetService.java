@@ -15,6 +15,7 @@ import edu.wisconsin.databaseclass.pet_connect.repositories.ColorRepository;
 import edu.wisconsin.databaseclass.pet_connect.repositories.LocationRepository;
 import edu.wisconsin.databaseclass.pet_connect.repositories.PetRepository;
 import edu.wisconsin.databaseclass.pet_connect.repositories.RescuerRepository;
+import edu.wisconsin.databaseclass.pet_connect.utils.IdGenerator;
 
 @Service
 public class PetService {
@@ -50,8 +51,11 @@ public class PetService {
         return rescuerRepository.findById(rescuerId).orElse(null);
     }
 
-    public void savePet(Pet pet) {
-        petRepository.save(pet);
+    public Pet savePet(Pet pet) {
+        if (pet.getPetId() == null || pet.getPetId().isEmpty()) {
+            pet.setPetId(IdGenerator.generateRandomId()); // Generate and set the ID
+        }
+        return petRepository.save(pet);
     }
 
     public Pet getPetById(String petId) {

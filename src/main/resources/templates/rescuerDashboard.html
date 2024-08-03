@@ -314,6 +314,44 @@
 
     <script th:inline="javascript">
         /*<![CDATA[*/
+         // function to update breeds based on pet type 
+         function updateBreeds() {
+            const type = document.getElementById('type').value;
+            const breed1Select = document.getElementById('breed1');
+            const breed2Select = document.getElementById('breed2');
+            breed1Select.innerHTML = ''; // Clear existing options
+            breed2Select.innerHTML = ''; // Clear existing options
+
+            // Add "None Selected" option
+            const noneOption1 = document.createElement('option');
+            noneOption1.value = '';
+            noneOption1.text = 'None Selected';
+            breed1Select.appendChild(noneOption1);
+
+            const noneOption2 = document.createElement('option');
+            noneOption2.value = '';
+            noneOption2.text = 'None Selected';
+            breed2Select.appendChild(noneOption2);
+
+            fetch(`/breeds?type=${type}`)
+                .then(response => response.json())
+                .then(breeds => {
+                    breeds.forEach(breed => {
+                        const option1 = document.createElement('option');
+                        option1.value = breed.breedId;
+                        option1.text = breed.name;
+                        breed1Select.appendChild(option1);
+
+                        const option2 = document.createElement('option');
+                        option2.value = breed.breedId;
+                        option2.text = breed.name;
+                        breed2Select.appendChild(option2);
+                    });
+                })
+                .catch(error => console.error('Error fetching breeds:', error));
+        }
+
+
         document.addEventListener('DOMContentLoaded', function() {
             const petCards = document.querySelectorAll('.pet-card');
             petCards.forEach(card => {
@@ -416,6 +454,44 @@
             var usernameInput = document.getElementById('username');
             var profileUsername = document.getElementById('profileUsername');
             profileUsername.textContent = usernameInput.value;
+        }
+
+
+         // function to update breeds based on pet type 
+        function updateBreeds() {
+            const type = document.getElementById('type').value;
+            const breed1Select = document.getElementById('breed1');
+            const breed2Select = document.getElementById('breed2');
+            breed1Select.innerHTML = ''; // Clear existing options
+            breed2Select.innerHTML = ''; // Clear existing options
+
+            // Add "None Selected" option
+            const noneOption1 = document.createElement('option');
+            noneOption1.value = '';
+            noneOption1.text = 'None Selected';
+            breed1Select.appendChild(noneOption1);
+
+            const noneOption2 = document.createElement('option');
+            noneOption2.value = '';
+            noneOption2.text = 'None Selected';
+            breed2Select.appendChild(noneOption2);
+
+            fetch(`/breeds?type=${type}`)
+                .then(response => response.json())
+                .then(breeds => {
+                    breeds.forEach(breed => {
+                        const option1 = document.createElement('option');
+                        option1.value = breed.breedId;
+                        option1.text = breed.name;
+                        breed1Select.appendChild(option1);
+
+                        const option2 = document.createElement('option');
+                        option2.value = breed.breedId;
+                        option2.text = breed.name;
+                        breed2Select.appendChild(option2);
+                    });
+                })
+                .catch(error => console.error('Error fetching breeds:', error));
         }
         /*]]>*/
     </script>
