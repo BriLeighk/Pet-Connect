@@ -12,16 +12,16 @@ public class Favorites {
 
     @ManyToOne
     @MapsId("userId")
-    @JoinColumn(name = "user_ID")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
     @MapsId("petId")
-    @JoinColumn(name = "pet_ID")
+    @JoinColumn(name = "pet_id")
     private Pet pet;
 
-    @Column
-    private Date favorited_at;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date favoritedAt;
 
     // Getters and setters
 
@@ -50,10 +50,10 @@ public class Favorites {
     }
 
     public Date getFavoritedAt() {
-        return favorited_at;
+        return favoritedAt;
     }
 
-    public void setFavoritedAt(Date favorited_at) {
-        this.favorited_at = favorited_at;
+    public void setFavoritedAt(Date favoritedAt) {
+        this.favoritedAt = favoritedAt;
     }
 }

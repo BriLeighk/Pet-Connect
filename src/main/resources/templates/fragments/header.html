@@ -39,3 +39,46 @@
         </ul>
     </div>
 </div>
+
+<div th:fragment="loadFavoritesPopup">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function loadFavorites() {
+            fetch('/favorites')
+                .then(response => response.json())
+                .then(favorites => {
+                    const favoritesList = document.getElementById('favoritesList');
+                    favoritesList.innerHTML = ''; // Clear existing list
+                    favorites.forEach(favorite => {
+                        const card = document.createElement('div');
+                        card.classList.add('pet-card');
+                        card.setAttribute('data-pet-id', favorite.petId);
+
+                        const img = document.createElement('img');
+                        img.src = favorite.photoUrl;
+                        img.alt = favorite.name;
+                        img.classList.add('pet-image');
+                        card.appendChild(img);
+
+                        const name = document.createElement('h3');
+                        name.textContent = favorite.name;
+                        card.appendChild(name);
+
+                        const adoptionStatus = document.createElement('p');
+                        adoptionStatus.textContent = 'Adoption Status: ' + favorite.adoptionStatus;
+                        card.appendChild(adoptionStatus);
+
+                        const fee = document.createElement('p');
+                        fee.textContent = 'Fee: $' + favorite.fee;
+                        card.appendChild(fee);
+
+                        favoritesList.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading favorites:', error);
+                });
+        }
+        /*]]>*/
+    </script>
+</div>

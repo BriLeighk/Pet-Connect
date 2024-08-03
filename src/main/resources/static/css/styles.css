@@ -71,3 +71,34 @@ button {
     font-size: 25px;
     color: #fff;
 }
+
+.favorite-pet-image {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.pet-card {
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.1);
+    padding: 1rem;
+    margin: 1rem;
+    text-align: center;
+}
+
+.pet-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.favorite-btn {
+    background: none;
+    border: none;
+    font-size: 25px;
+    color: #ff0000;
+    cursor: pointer;
+}

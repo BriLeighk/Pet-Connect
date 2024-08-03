@@ -35,6 +35,7 @@
                     <h3 th:text="${pet.name}">Pet Name</h3>
                     <p th:text="'Adoption Status: ' + ${pet.adoptionStatus}">Adoption Status</p>
                     <p th:text="'Fee: $' + ${pet.fee}">Fee</p>
+                    <button class="favorite-btn" th:data-pet-id="${pet.petId}" onclick="addToFavorites('${pet.petId}')">❤️</button>
                 </div>
             </div>
         </div>
@@ -49,12 +50,14 @@
         <div class="favorites-popup-content">
             <span class="close">&times;</span>
             <h2>Your Favorites</h2>
-            <ul id="favoritesList">
+            <div id="favoritesList" class="pet-cards-container">
                 <!-- Favorite pet profiles will be dynamically added here -->
-            </ul>
+            </div>
         </div>
     </div>
 
+    <div th:insert="~{fragments/header :: loadFavoritesPopup}"></div> <!-- Corrected fragment path -->
+    
     <!-- JavaScript functions -->
     <script th:inline="javascript">
         /*<![CDATA[*/
@@ -94,18 +97,31 @@
             const favoritesPopup = document.getElementById('favoritesPopup');
             const closeBtn = document.querySelector('.favorites-popup .close');
 
-            favoritesIcon.addEventListener('click', function() {
-                favoritesPopup.style.display = 'block';
-            });
+            if (favoritesIcon && favoritesPopup && closeBtn) {
+                favoritesIcon.addEventListener('click', function() {
+                    favoritesPopup.style.display = 'block';
+                    loadFavorites();
+                });
 
-            closeBtn.addEventListener('click', function() {
-                favoritesPopup.style.display = 'none';
-            });
-
-            window.addEventListener('click', function(event) {
-                if (event.target == favoritesPopup) {
+                closeBtn.addEventListener('click', function() {
                     favoritesPopup.style.display = 'none';
-                }
+                });
+
+                window.addEventListener('click', function(event) {
+                    if (event.target == favoritesPopup) {
+                        favoritesPopup.style.display = 'none';
+                    }
+                });
+            }
+
+            // Event listener for adding to favorites
+            const favoriteButtons = document.querySelectorAll('.favorite-btn');
+            favoriteButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent triggering the card click event
+                    const petId = this.getAttribute('data-pet-id');
+                    addToFavorites(petId);
+                });
             });
         });
 
@@ -161,7 +177,34 @@
                     console.error('Error fetching pet details:', error);
                 });
         }
+        
+        function addToFavorites(petId) {
+            const payload = { petId: petId };
+            console.log('Sending payload:', payload);
+
+            fetch('/favorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (response.ok) {
+                    alert('Pet added to favorites!');
+                } else if (response.status === 401) {
+                    alert('You need to log in to add favorites.');
+                } else {
+                    console.log('Failed to add pet to favorites.');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding pet to favorites:', error);
+            });
+        }
         /*]]>*/
     </script>
 </body>
+<!-- TODO: create favorites modal (popup on main page on click of icon) -->
 </html>

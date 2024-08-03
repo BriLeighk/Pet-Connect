@@ -39,7 +39,7 @@ public class FavoritesId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FavoritesId that = (FavoritesId) o;
-        return userId == that.userId && petId == that.petId;
+        return userId == that.userId && Objects.equals(petId, that.petId);
     }
 
     @Override
