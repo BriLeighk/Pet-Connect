@@ -37,7 +37,7 @@ public class FavoritesController { // Controller for Favorites relationship set
     }
 
     @PostMapping("/favorite")
-    public String saveFavorite(@RequestParam("user_ID") int userId, @RequestParam("pet_ID") int petId) {
+    public String saveFavorite(@RequestParam("user_ID") int userId, @RequestParam("pet_ID") String petId) {
         Favorites favorites = new Favorites();
         FavoritesId id = new FavoritesId(userId, petId);
         User user = userService.getUserById(userId);

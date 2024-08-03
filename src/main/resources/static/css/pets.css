@@ -1,7 +1,7 @@
 .pet-cards-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; /* Align the cards to the left */
+    justify-content: center; /* Align the cards to the left */
     gap: 5px; /* Space between cards */
 }
 
@@ -13,6 +13,7 @@
     padding: 5px; /* Reduced padding */
     text-align: center;
     width: 100px; /* Reduced width */
+    height: 175px;
     margin: 10px; /* Reduced margin */
     cursor: pointer; /* Ensure the card is clickable */
     transition: transform 0.3s;
@@ -99,3 +100,4 @@
     color: #b08968; /* Lighter color */
     font-weight: normal; /* Not bold */
 }
+

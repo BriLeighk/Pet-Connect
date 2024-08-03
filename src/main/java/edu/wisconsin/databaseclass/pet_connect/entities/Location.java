@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 
 // Entity for Location
 @Entity
-@Table(name = "location")
+@Table(name = "location", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"longitude", "latitude"})
+})
 public class Location {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int locationId;
 
     @Column(nullable = false)

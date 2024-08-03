@@ -43,7 +43,7 @@ public class CombinedMessagesController {
 
     @PostMapping("/save-message")
     public String saveMessage(@RequestParam("sender_ID") int senderId, @RequestParam("receiver_ID") int receiverId,
-                              @RequestParam("pet_ID") int petId, @RequestParam("content") String content) {
+                              @RequestParam("pet_ID") String petId, @RequestParam("content") String content) {
         Message message = new Message();
         message.setSender(userService.getUserById(senderId));
         message.setReceiver(userService.getUserById(receiverId));

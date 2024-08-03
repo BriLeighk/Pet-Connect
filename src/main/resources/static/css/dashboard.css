@@ -262,3 +262,36 @@ form input[type="text"]:hover, form input[type="number"]:hover {
 .delete-pet-icon:hover {
     color: rgb(106, 1, 1);
 }
+
+.pet-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+    min-height: 205px;
+}
+
+.pet-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard-pet-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 620px;
+}
+
+.rescuer-pet-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin: 2% auto;
+}
