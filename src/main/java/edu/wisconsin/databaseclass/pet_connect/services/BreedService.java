@@ -6,13 +6,15 @@ import org.springframework.stereotype.Service;
 import edu.wisconsin.databaseclass.pet_connect.entities.Breed;
 import edu.wisconsin.databaseclass.pet_connect.repositories.BreedRepository;
 
+import java.util.List;
+
 @Service
 public class BreedService {
 
     @Autowired
     private BreedRepository breedRepository;
 
-    public Breed getBreedById(int id) {
-        return breedRepository.findById(id).orElse(null);
+    public List<Breed> getAllBreeds() {
+        return breedRepository.findAll();
     }
 }

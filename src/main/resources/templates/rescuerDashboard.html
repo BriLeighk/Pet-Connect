@@ -20,6 +20,7 @@
 </head>
 <body>
     <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display on page -->
+    <div th:insert="~{fragments/header :: loadFavoritesPopup}"></div> <!-- Corrected fragment path -->
     <h1>Rescuer Dashboard</h1>
     
     <!-- container to handle rescuer profile card structuring -->
@@ -378,6 +379,27 @@
                     openEditPetModal(petId);
                 });
             });
+
+            const favoritesIcon = document.getElementById('favoritesIcon');
+            const favoritesPopup = document.getElementById('favoritesPopup');
+            const closeBtn = document.querySelector('.favorites-popup .close');
+
+            if (favoritesIcon && favoritesPopup && closeBtn) {
+                favoritesIcon.addEventListener('click', function() {
+                    favoritesPopup.style.display = 'block';
+                    loadFavorites();
+                });
+
+                closeBtn.addEventListener('click', function() {
+                    favoritesPopup.style.display = 'none';
+                });
+
+                window.addEventListener('click', function(event) {
+                    if (event.target == favoritesPopup) {
+                        favoritesPopup.style.display = 'none';
+                    }
+                });
+            }
         });
 
         function deletePet(petId) {

@@ -21,7 +21,7 @@ public class Pet {
     private static final Logger logger = LoggerFactory.getLogger(Pet.class);
 
     @Id
-    private String petId;
+    private String petId; // Change to String to accommodate hash IDs
 
     @Column
     private String name;

@@ -1,58 +1,96 @@
 package edu.wisconsin.databaseclass.pet_connect.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import edu.wisconsin.databaseclass.pet_connect.dtos.PetDTO;
 import edu.wisconsin.databaseclass.pet_connect.entities.Favorites;
 import edu.wisconsin.databaseclass.pet_connect.entities.FavoritesId;
 import edu.wisconsin.databaseclass.pet_connect.entities.Pet;
 import edu.wisconsin.databaseclass.pet_connect.entities.User;
 import edu.wisconsin.databaseclass.pet_connect.services.FavoritesService;
 import edu.wisconsin.databaseclass.pet_connect.services.PetService;
-import edu.wisconsin.databaseclass.pet_connect.services.UserService;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
-public class FavoritesController { // Controller for Favorites relationship set
+public class FavoritesController {
 
     @Autowired
-    private FavoritesService favoritesService; // access to favorites service file
+    private FavoritesService favoritesService;
+
 
     @Autowired
-    private UserService userService; // access to user service file
-
-    @Autowired
-    private PetService petService; // access to pet service file
-
-    // boilerplate code --- may need modification once we integrate pet profiles feature
-    @GetMapping("/favorites")
-    public String getAllFavorites(Model model) {
-        model.addAttribute("favorites", favoritesService.getAllFavorites());
-        return "favorites";
-    }
+    private PetService petService;
 
     @PostMapping("/favorite")
-    public String saveFavorite(@RequestParam("user_ID") int userId, @RequestParam("pet_ID") String petId) {
-        Favorites favorites = new Favorites();
-        FavoritesId id = new FavoritesId(userId, petId);
-        User user = userService.getUserById(userId);
-        Pet pet = petService.getPetById(petId);
-        favorites.setId(id);
-        favorites.setUser(user);
-        favorites.setPet(pet);
-        favorites.setFavoritedAt(new Date());
-        favoritesService.saveFavorites(favorites);
-        return "redirect:/favorites";
+    @ResponseBody
+    public ResponseEntity<Favorites> saveFavorite(@RequestBody Map<String, String> payload, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        try {
+            String petId = payload.get("petId");
+            System.out.println("Received petId: " + petId);
+
+            Pet pet = petService.getPetById(petId);
+            if (pet == null) {
+                System.out.println("Pet not found for petId: " + petId);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            Favorites favorites = new Favorites();
+            favorites.setId(new FavoritesId(user.getUserId(), petId));
+            favorites.setUser(user);
+            favorites.setPet(pet);
+            favorites.setFavoritedAt(new Date());
+
+            Favorites savedFavorite = favoritesService.saveFavorites(favorites);
+            System.out.println("Favorite saved: " + savedFavorite);
+
+            return new ResponseEntity<>(savedFavorite, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/favorites")
+    @ResponseBody
+    public ResponseEntity<List<PetDTO>> getFavorites(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        try {
+            List<Favorites> favorites = favoritesService.getFavoritesByUserId(user.getUserId());
+            List<PetDTO> favoritePets = favorites.stream().map(fav -> {
+                Pet pet = fav.getPet();
+                PetDTO petDTO = new PetDTO();
+                petDTO.setPetId(pet.getPetId());
+                petDTO.setName(pet.getName());
+                petDTO.setPhotoUrl("/petImage/" + pet.getPetId());
+                petDTO.setAdoptionStatus(pet.getAdoptionStatus());
+                petDTO.setFee(pet.getFee());
+                return petDTO;
+            }).collect(Collectors.toList());
+            return new ResponseEntity<>(favoritePets, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
-
-
-
-
-
-

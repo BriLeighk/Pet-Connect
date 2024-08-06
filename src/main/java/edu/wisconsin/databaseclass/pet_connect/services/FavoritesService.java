@@ -29,6 +29,8 @@ public class FavoritesService {
     public void deleteFavorites(FavoritesId id) {
         favoritesRepository.deleteById(id);
     }
+
+    public List<Favorites> getFavoritesByUserId(int userId) {
+        return favoritesRepository.findByUserId(userId); // Use the custom query method
+    }
 }
-
-

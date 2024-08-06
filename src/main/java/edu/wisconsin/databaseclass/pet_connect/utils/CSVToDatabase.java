@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -45,10 +46,10 @@ public class CSVToDatabase implements CommandLineRunner {
             reader.readNext(); // Skip header
             while ((values = reader.readNext()) != null) {
                 Pet pet = new Pet();
-                pet.setFieldsFromCsv(values, locationRepository, rescuerRepository, breedRepository, colorRepository);
+                //pet.setFieldsFromCsv(values, locationRepository, rescuerRepository, breedRepository, colorRepository);
                 pet.setLongitude(0.0); // Default value
                 pet.setLatitude(0.0);  // Default value
-                petRepository.save(pet);
+                //petRepository.save(pet);
                 logger.info("Saved pet with ID: {}", pet.getPetId());
             }
         } catch (IOException | CsvValidationException e) {

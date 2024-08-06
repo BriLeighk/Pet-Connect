@@ -8,10 +8,11 @@ import java.util.List;
 public class Rescuer {
 
     @Id
+    @Column(name = "rescuer_ID")
     private String rescuerId;
 
     @OneToOne
-    @JoinColumn(name = "user_id", unique = true)
+    @JoinColumn(name = "user_ID", unique = true)
     private User user;
 
     @OneToMany(mappedBy = "rescuer")

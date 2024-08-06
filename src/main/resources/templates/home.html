@@ -18,8 +18,8 @@
 
             <div class="search-profiles"> <!-- Search bar -->
                 <form action="#"> <!-- implemented Search bar -->
-                    <input type="text" placeholder="Search Profiles" name="search">
-                    <button>
+                    <input type="text" id="searchInput" placeholder="Search Profiles" name="search">
+                    <button type="button">
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
@@ -27,11 +27,15 @@
 
             <!-- Pet profile cards section -->
             <div class="pet-cards-container">
-                <div th:each="pet : ${pets}" class="pet-card" th:data-pet-id="${pet.petId}">
+                <div th:each="pet : ${pets}" class="pet-card" 
+                     th:data-pet-id="${pet.petId}" 
+                     th:data-type="${pet.type == 1 ? 'cat' : 'dog'}" 
+                     th:data-breed="${breedNames[pet.petId]}">
                     <img th:src="@{/petImage/{petId}(petId=${pet.petId})}" alt="Pet Image" class="pet-image">
                     <h3 th:text="${pet.name}">Pet Name</h3>
                     <p th:text="'Adoption Status: ' + ${pet.adoptionStatus}">Adoption Status</p>
                     <p th:text="'Fee: $' + ${pet.fee}">Fee</p>
+                    <button class="favorite-btn" th:data-pet-id="${pet.petId}" onclick="addToFavorites('${pet.petId}')">❤️</button>
                 </div>
             </div>
         </div>
@@ -41,19 +45,87 @@
     <div th:insert="~{pets :: petModal}"></div>
     <div th:insert="~{pets :: petModalScripts}"></div>
 
+    <!-- Favorites Popup -->
+    <div id="favoritesPopup" class="favorites-popup">
+        <div class="favorites-popup-content">
+            <span class="close">&times;</span>
+            <h2>Your Favorites</h2>
+            <div id="favoritesList" class="pet-cards-container">
+                <!-- Favorite pet profiles will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <div th:insert="~{fragments/header :: loadFavoritesPopup}"></div> <!-- Corrected fragment path -->
+    
     <!-- JavaScript functions -->
     <script th:inline="javascript">
         /*<![CDATA[*/
         document.addEventListener('DOMContentLoaded', function() {
             const petCards = document.querySelectorAll('.pet-card');
+            const searchInput = document.getElementById('searchInput');
+
+            // Event listener for real-time search
+            searchInput.addEventListener('input', function() {
+                const searchTerm = searchInput.value.toLowerCase();
+                petCards.forEach(card => {
+                    const petName = card.querySelector('h3').textContent.toLowerCase();
+                    const adoptionStatus = card.querySelector('p:nth-of-type(1)').textContent.toLowerCase().replace('adoption status: ', '');
+                    const fee = card.querySelector('p:nth-of-type(2)').textContent.toLowerCase().replace('fee: $', '');
+                    const type = card.getAttribute('data-type').toLowerCase();
+                    const breed = card.getAttribute('data-breed').toLowerCase();
+
+                    // Check if any of the fields match the search term
+                    if (petName.includes(searchTerm) || adoptionStatus.includes(searchTerm) || fee.includes(searchTerm) || type.includes(searchTerm) || breed.includes(searchTerm)) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            // Event listener for opening pet modal
             petCards.forEach(card => {
                 card.addEventListener('click', function() {
                     const petId = this.getAttribute('data-pet-id');
                     openPetModal(petId);
                 });
             });
+
+            // Favorites popup functionality
+            const favoritesIcon = document.getElementById('favoritesIcon');
+            const favoritesPopup = document.getElementById('favoritesPopup');
+            const closeBtn = document.querySelector('.favorites-popup .close');
+
+            if (favoritesIcon && favoritesPopup && closeBtn) {
+                favoritesIcon.addEventListener('click', function() {
+                    favoritesPopup.style.display = 'block';
+                    loadFavorites();
+                });
+
+                closeBtn.addEventListener('click', function() {
+                    favoritesPopup.style.display = 'none';
+                });
+
+                window.addEventListener('click', function(event) {
+                    if (event.target == favoritesPopup) {
+                        favoritesPopup.style.display = 'none';
+                    }
+                });
+            }
+
+            // Event listener for adding to favorites
+            const favoriteButtons = document.querySelectorAll('.favorite-btn');
+            favoriteButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent triggering the card click event
+                    const petId = this.getAttribute('data-pet-id');
+                    addToFavorites(petId);
+                });
+            });
         });
 
+        // Function to open pet modal and fetch pet details
         function openPetModal(petId) {
             console.log("openPetModal function is loaded");
             fetch(`/pet/${petId}`)
@@ -104,6 +176,32 @@
                 .catch(error => {
                     console.error('Error fetching pet details:', error);
                 });
+        }
+        
+        function addToFavorites(petId) {
+            const payload = { petId: petId };
+            console.log('Sending payload:', payload);
+
+            fetch('/favorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (response.ok) {
+                    alert('Pet added to favorites!');
+                } else if (response.status === 401) {
+                    alert('You need to log in to add favorites.');
+                } else {
+                    console.log('Failed to add pet to favorites.');
+                }
+            })
+            .catch(error => {
+                console.error('Error adding pet to favorites:', error);
+            });
         }
         /*]]>*/
     </script>
