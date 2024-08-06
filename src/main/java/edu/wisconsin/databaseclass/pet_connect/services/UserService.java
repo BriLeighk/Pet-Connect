@@ -101,9 +101,10 @@ public class UserService {
         }
         user.setRescuer(rescuer);
         rescuer.setUser(user);
+        user.setRole("RESCUER");
         userRepository.save(user);
         rescuerRepository.save(rescuer);
-        user.setRole("RESCUER");
+        
         return true;
     }
 

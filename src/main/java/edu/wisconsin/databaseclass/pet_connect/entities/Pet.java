@@ -98,7 +98,7 @@ public class Pet {
     @Transient
     private String breed2Name;
 
-    @Column
+    @Column(length = 10000)
     private String description;
 
     @Transient

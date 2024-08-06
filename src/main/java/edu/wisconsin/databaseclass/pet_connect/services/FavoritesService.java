@@ -33,4 +33,9 @@ public class FavoritesService {
     public List<Favorites> getFavoritesByUserId(int userId) {
         return favoritesRepository.findByUserId(userId); // Use the custom query method
     }
+
+
+    public void deleteFavorite(int userId, String petId) {
+        favoritesRepository.deleteById(new FavoritesId(userId, petId));
+    }
 }

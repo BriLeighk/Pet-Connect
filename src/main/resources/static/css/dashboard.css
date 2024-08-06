@@ -25,7 +25,7 @@ a {
     height: 40vh;
 }
 
-.profile-card, .rescuer-card  {
+.profile-card, .rescuer-card, .addpet-content   {
     background-color: #ede0d4;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -34,6 +34,16 @@ a {
     width: 400px;
     position: relative; /* Add this to position the clear button relative to the profile card */
 }
+
+.addpet-content {
+    display: flex;
+    justify-content: space-between;
+    width: 440px;  
+}
+
+
+
+
 
 .profile-card img {
     border-radius: 50%;
@@ -122,7 +132,7 @@ form div {
 form label {
     width: 100px; /* Set a fixed width for labels */
     text-align: left; /* Align text to the right */
-    margin-right: 10px; /* Add some space between label and input */
+    margin-right: 20px; /* Increase space between label and input */
     white-space: nowrap; /* Prevent labels from wrapping */
     color: #b08968; /* Change label text color */
 }
@@ -139,7 +149,8 @@ form input[type="text"], form input[type="number"], select, input[type="file"], 
     border: none;
     border-radius: 4px;
     padding: 4px 5px; /* Add some padding for better appearance */
-    transition: b0x-shadow 0.6s ease-in-out;
+    margin-left: 70px; /* Add space between input and label */
+    transition: box-shadow 0.6s ease-in-out;
 }
 
 select {
@@ -291,7 +302,7 @@ form input[type="text"]:hover, form input[type="number"]:hover {
 .rescuer-pet-container {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    margin: 2% auto;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 0 auto;
 }

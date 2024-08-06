@@ -78,8 +78,9 @@
     
         <!-- Form for Adding New Pet -->
         <div id="addPetForm">
+            <h2>Add New Pet</h2>
             <div class="addpet-content">
-                <h2>Add New Pet</h2>
+                
                 <form id="petForm" method="post" action="/addPet" enctype="multipart/form-data"> <!-- call to endpoint that adds new pet in database -->
                     <input type="hidden" name="rescuerId" th:value="${rescuerId}">
                     <div>
@@ -156,6 +157,7 @@
                             <option value="" selected>None Selected</option>
                             <option value="1">Male</option>
                             <option value="2">Female</option>
+                            <option value="3">Mixed</option>
                         </select>
                     </div>
                     <div>

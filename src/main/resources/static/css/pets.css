@@ -42,6 +42,36 @@
     font-size: 8px; /* Reduced font size */
 }
 
+.delete-favorite-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: rgb(152, 0, 0);
+    font-size: 1em;
+    transition: color 0.6s ease-in-out;
+}
+
+.delete-favorite-icon:hover {
+    color: rgb(106, 1, 1);
+    transition: color 0.6s ease-in-out;
+}
+
+.notification {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.notification.error {
+    background-color: #f44336; /* Red */
+}
 /* Modal styles */
 .modal {
     color: #60402b;
@@ -100,4 +130,3 @@
     color: #b08968; /* Lighter color */
     font-weight: normal; /* Not bold */
 }
-
