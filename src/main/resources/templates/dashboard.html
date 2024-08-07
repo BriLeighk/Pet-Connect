@@ -63,6 +63,8 @@
             <p th:text="${errorMessage}"></p>
         </div>
 
+        <div th:insert="~{fragments/header :: footer}"></div>
+
         <script>
             function enableEdit() {
                 document.getElementById('editForm').style.display = 'block';

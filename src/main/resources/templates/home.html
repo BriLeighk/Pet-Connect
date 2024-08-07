@@ -35,7 +35,7 @@
                     <h3 th:text="${pet.name}">Pet Name</h3>
                     <p th:text="'Adoption Status: ' + ${pet.adoptionStatus}">Adoption Status</p>
                     <p th:text="'Fee: $' + ${pet.fee}">Fee</p>
-                    <button class="favorite-btn" th:data-pet-id="${pet.petId}" onclick="addToFavorites('${pet.petId}')">❤️</button>
+                    <button class="favorite-btn" th:data-pet-id="${pet.petId}" onclick="addToFavorites('${pet.petId}')">🤎</button>
                 </div>
             </div>
         </div>
@@ -57,6 +57,7 @@
     </div>
 
     <div th:insert="~{fragments/header :: loadFavoritesPopup}"></div> <!-- Corrected fragment path -->
+    <div th:insert="~{fragments/header :: footer}"></div>
     
     <!-- JavaScript functions -->
     <script th:inline="javascript">
@@ -206,5 +207,4 @@
         /*]]>*/
     </script>
 </body>
-<!-- TODO: create favorites modal (popup on main page on click of icon) -->
 </html>

@@ -74,12 +74,6 @@ public class Pet {
     @Column(nullable = false)
     private int furLength;
 
-    @Column(nullable = false)
-    private int videoAmount = 0;
-
-    @Column(nullable = false)
-    private int photoAmount = 0;
-
     @Lob
     @Column(name = "photos", columnDefinition = "LONGBLOB")
     private byte[] photos;
@@ -98,7 +92,7 @@ public class Pet {
     @Transient
     private String breed2Name;
 
-    @Column
+    @Column(length = 10000)
     private String description;
 
     @Transient
@@ -253,22 +247,6 @@ public class Pet {
         this.furLength = furLength;
     }
 
-    public int getVideoAmount() {
-        return videoAmount;
-    }
-
-    public void setVideoAmount(int videoAmount) {
-        this.videoAmount = videoAmount;
-    }
-
-    public int getPhotoAmount() {
-        return photoAmount;
-    }
-
-    public void setPhotoAmount(int photoAmount) {
-        this.photoAmount = photoAmount;
-    }
-
     public byte[] getPhotos() {
         return photos;
     }
@@ -410,9 +388,6 @@ public class Pet {
             this.description = values[18]; 
             this.petId = values[19]; // Directly set the petId as a String
 
-            this.photoAmount = values[20].isEmpty() ? 0 : Integer.parseInt(values[20]);
-            this.videoAmount = values[21].isEmpty() ? 0 : Integer.parseInt(values[21]);
-
             // Load photo from file
             String photoFilePath = "src/main/resources/static/images/" + this.petId + "-1.jpg";
             try {
@@ -454,8 +429,6 @@ public class Pet {
                 ", dewormed=" + dewormed +
                 ", fee=" + fee +
                 ", furLength=" + furLength +
-                ", videoAmount=" + videoAmount +
-                ", photoAmount=" + photoAmount +
                 ", description='" + description + '\'' +
                 ", location=" + location +
                 ", rescuer=" + rescuer +

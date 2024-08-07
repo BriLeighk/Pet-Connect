@@ -29,6 +29,10 @@
     </header>
 </div>
 
+<footer>
+    <p>@ 2024 Bri Kirchgessner  |  Sritha Kondragunta  |  Kenneth Diao</p>
+</footer>
+
 <!-- Favorites Popup -->
 <div id="favoritesPopup" class="favorites-popup">
     <div class="favorites-popup-content">
@@ -72,6 +76,16 @@
                         fee.textContent = 'Fee: $' + favorite.fee;
                         card.appendChild(fee);
 
+                        // Add delete icon
+                        const deleteIcon = document.createElement('i');
+                        deleteIcon.classList.add('fas', 'fa-trash', 'delete-favorite-icon');
+                        deleteIcon.setAttribute('data-pet-id', favorite.petId);
+                        deleteIcon.addEventListener('click', function(event) {
+                            event.stopPropagation();
+                            deleteFavorite(favorite.petId);
+                        });
+                        card.appendChild(deleteIcon);
+
                         favoritesList.appendChild(card);
                     });
                 })
@@ -79,6 +93,46 @@
                     console.error('Error loading favorites:', error);
                 });
         }
+
+        function deleteFavorite(petId) {
+            fetch(`/favorite/${petId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Favorite deleted successfully');
+                    loadFavorites(); // Reload the favorites list
+                } else {
+                    alert('Failed to delete favorite');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting favorite:', error);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const favoritesIcon = document.getElementById('favoritesIcon');
+            const favoritesPopup = document.getElementById('favoritesPopup');
+            const closeBtn = document.querySelector('.favorites-popup .close');
+
+            if (favoritesIcon && favoritesPopup && closeBtn) {
+                favoritesIcon.addEventListener('click', function() {
+                    favoritesPopup.style.display = 'block';
+                    loadFavorites();
+                });
+
+                closeBtn.addEventListener('click', function() {
+                    favoritesPopup.style.display = 'none';
+                });
+
+                window.addEventListener('click', function(event) {
+                    if (event.target == favoritesPopup) {
+                        favoritesPopup.style.display = 'none';
+                    }
+                });
+            }
+        });
         /*]]>*/
     </script>
 </div>

@@ -1,6 +1,8 @@
 package edu.wisconsin.databaseclass.pet_connect.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +27,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class PetController {
 
     @Autowired
     private PetService petService;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
+
+    private static final Logger logger = LoggerFactory.getLogger(PetController.class);
 
     // endpoint to show add new pet form
     @GetMapping("/addNewPet")
@@ -64,10 +72,31 @@ public class PetController {
             return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(pet.getPhotos());
         } else {
             try {
-                byte[] placeholderImage = Files.readAllBytes(Paths.get("src/main/resources/static/images/pet-placeholder.png"));
-                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(placeholderImage);
+                String placeholderPath;
+                if (pet != null) {
+                    if (pet.getType() == 1) { // Dog
+                        if (pet.getGender() == 3) {
+                            placeholderPath = "classpath:/static/images/dog-group-placeholder.png";
+                        } else {
+                            placeholderPath = "classpath:/static/images/dog-placeholder.png";
+                        }
+                    } else if (pet.getType() == 2) { // Cat
+                        if (pet.getGender() == 3) {
+                            placeholderPath = "classpath:/static/images/cat-group-placeholder.png";
+                        } else {
+                            placeholderPath = "classpath:/static/images/cat-placeholder.png";
+                        }
+                    } else {
+                        placeholderPath = "classpath:/static/images/pet-placeholder.png";
+                    }
+                    Resource resource = resourceLoader.getResource(placeholderPath);
+                    byte[] placeholderImage = Files.readAllBytes(resource.getFile().toPath());
+                    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(placeholderImage);
+                } else {
+                    return ResponseEntity.notFound().build();
+                }
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Error reading placeholder image", e);
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         }
@@ -82,7 +111,7 @@ public class PetController {
             PetDTO petDTO = new PetDTO();
             petDTO.setPetId(pet.getPetId());
             petDTO.setName(pet.getName());
-            petDTO.setType(pet.getType() == 1 ? "Dog" : "Cat");
+            petDTO.setType(pet.getType() == 1 ? "Dog" : pet.getType() == 2 ? "Cat" : "Mixed");
             petDTO.setBreed1(petService.getBreedById(pet.getBreed1()).getName());
             if (pet.getBreed2() != null) {
                 petDTO.setBreed2(petService.getBreedById(pet.getBreed2()).getName());
@@ -97,7 +126,7 @@ public class PetController {
             petDTO.setLocation(petService.getLocationById(pet.getLocation().getLocationId()).getState());
             petDTO.setMaturitySize(getMaturitySizeString(pet.getMaturitySize()));
             petDTO.setAge(pet.getAge());
-            petDTO.setGender(pet.getGender() == 1 ? "Male" : "Female");
+            petDTO.setGender(getGenderString(pet.getGender()));
             petDTO.setAdoptionStatus(pet.getAdoptionStatus());
             petDTO.setHealthStatus(getHealthStatusString(pet.getHealthStatus()));
             petDTO.setVaccinationStatus(getVaccinationStatusString(pet.getVaccinationStatus()));
@@ -112,6 +141,20 @@ public class PetController {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
+    
+    private String getGenderString(int gender) {
+        switch (gender) {
+            case 1:
+                return "Male";
+            case 2:
+                return "Female";
+            case 3:
+                return "Mixed";
+            default:
+                return "Not Specified";
+        }
+    }
+
     // endpoint to delete pet by id
     @DeleteMapping("/deletePet/{petId}")
     public ResponseEntity<Void> deletePet(@PathVariable String petId) {
@@ -213,7 +256,6 @@ public class PetController {
         pet.setFee(fee);
         pet.setFurLength(furLength);
         pet.setDescription(description); // Set description
-        pet.setPhotoAmount(photos != null ? photos.length : 0); // Set photo amount based on uploaded photos
         Location location = petService.getLocationById(locationId);
         pet.setLocation(location);
         Rescuer rescuer = petService.getRescuerById(rescuerId);

@@ -46,10 +46,10 @@ public class CSVToDatabase implements CommandLineRunner {
             reader.readNext(); // Skip header
             while ((values = reader.readNext()) != null) {
                 Pet pet = new Pet();
-                //pet.setFieldsFromCsv(values, locationRepository, rescuerRepository, breedRepository, colorRepository);
+                pet.setFieldsFromCsv(values, locationRepository, rescuerRepository, breedRepository, colorRepository);
                 pet.setLongitude(0.0); // Default value
                 pet.setLatitude(0.0);  // Default value
-                //petRepository.save(pet);
+                petRepository.save(pet);
                 logger.info("Saved pet with ID: {}", pet.getPetId());
             }
         } catch (IOException | CsvValidationException e) {
