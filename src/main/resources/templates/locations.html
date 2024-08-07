@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="max-age=2592000">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/pets.css}"> <!-- Include pets.css for styling -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel="icon" type="image/png" th:href="@{/favicon.png}">
+  <title>Pet Map</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    #map {
+      height: 100%;
+    }
+    .element {
+        -ms-transform: rotate(45deg); /* IE 9 */
+        transform: rotate(45deg); /* Modern browsers */
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY62yztHQf7nv2JEIwcr-_QLmatLXk4go&callback=initMap" async defer></script>
+</head>
+<body>
+  <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
+  <div th:insert="~{pets :: petModal}"></div>
+  <div th:insert="~{pets :: petModalScripts}"></div>
+  <div id="map"></div>
+  <script>
+    let map;
+    let infoWindow;
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 20, lng: -160 },
+        zoom: 2
+      });
+      infoWindow = new google.maps.InfoWindow();
+
+      fetch('/pets')
+        .then(response => response.json())
+        .then(data => {
+          addMarkers(data);
+        })
+        .catch(error => console.error('Error fetching pets:', error));
+    }
+
+    function addMarkers(pets) {
+      pets.forEach(pet => {
+        const lat = parseFloat(pet.latitude);
+        const lng = parseFloat(pet.longitude);
+
+        if (!isNaN(lat) && !isNaN(lng)) {
+          const marker = new google.maps.Marker({
+            position: { lat, lng },
+            map: map,
+            title: pet.name
+          });
+
+          // Update the click listener to open the pet modal
+          marker.addListener('click', () => {
+            openPetModal(pet.petId); // Call the function to open the pet modal
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>

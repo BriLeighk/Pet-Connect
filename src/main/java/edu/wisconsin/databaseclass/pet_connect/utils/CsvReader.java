@@ -9,15 +9,9 @@ import edu.wisconsin.databaseclass.pet_connect.entities.Rescuer;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 public class CsvReader {
-
-    private static final Random random = new Random();
-    private static final Set<String> uniqueCoordinates = new HashSet<>();
 
     public static List<Breed> readBreedsCsv(String filePath) {
         List<Breed> breeds = new ArrayList<>();
@@ -66,13 +60,10 @@ public class CsvReader {
                 Location location = new Location();
                 location.setLocationId(Integer.parseInt(values[0]));
                 location.setState(values[1].replace("\"", ""));
+                // Set coordinates if provided
                 if (values.length > 2) {
                     location.setLongitude(Double.parseDouble(values[2]));
                     location.setLatitude(Double.parseDouble(values[3]));
-                } else {
-                    double[] uniqueCoords = generateUniqueCoordinates();
-                    location.setLongitude(uniqueCoords[0]);
-                    location.setLatitude(uniqueCoords[1]);
                 }
                 locations.add(location);
             }
@@ -98,17 +89,5 @@ public class CsvReader {
             e.printStackTrace();
         }
         return rescuers;
-    }
-
-    private static double[] generateUniqueCoordinates() {
-        double longitude, latitude;
-        String coordKey;
-        do {
-            longitude = -180 + (180 - (-180)) * random.nextDouble();
-            latitude = -90 + (90 - (-90)) * random.nextDouble();
-            coordKey = longitude + "," + latitude;
-        } while (uniqueCoordinates.contains(coordKey));
-        uniqueCoordinates.add(coordKey);
-        return new double[]{longitude, latitude};
     }
 }

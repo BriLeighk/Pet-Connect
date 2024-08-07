@@ -1,5 +1,11 @@
 package edu.wisconsin.databaseclass.pet_connect.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -15,20 +21,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import edu.wisconsin.databaseclass.pet_connect.dtos.PetDTO;
 import edu.wisconsin.databaseclass.pet_connect.entities.Breed;
 import edu.wisconsin.databaseclass.pet_connect.entities.Color;
 import edu.wisconsin.databaseclass.pet_connect.entities.Location;
 import edu.wisconsin.databaseclass.pet_connect.entities.Pet;
 import edu.wisconsin.databaseclass.pet_connect.entities.Rescuer;
 import edu.wisconsin.databaseclass.pet_connect.services.PetService;
-import edu.wisconsin.databaseclass.pet_connect.dtos.PetDTO;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Controller
 public class PetController {
@@ -55,7 +55,31 @@ public class PetController {
         model.addAttribute("locations", locations);
         return "addNewPet";
     }
-
+    
+    @GetMapping("/pets")
+    @ResponseBody
+    public List<PetDTO> getAllPets() {
+        List<Pet> pets = petService.getAllPets(); // Ensure this method returns all pets from the database
+        return pets.stream().map(pet -> {
+            PetDTO petDTO = new PetDTO();
+            petDTO.setPetId(pet.getPetId());
+            petDTO.setName(pet.getName());
+            
+            // Get location details
+            Location location = pet.getLocation();
+            if (location != null) {
+                petDTO.setLocation(location.getState()); // Assuming Location object has state field
+                // Perform minor calculation on coordinates to avoid overlap
+                double adjustedLongitude = location.getLongitude() + (Math.random() * 0.0001); // Minor adjustment
+                double adjustedLatitude = location.getLatitude() + (Math.random() * 0.0001); // Minor adjustment
+                petDTO.setLongitude(adjustedLongitude);
+                petDTO.setLatitude(adjustedLatitude);
+            }
+            
+            petDTO.setPhotoUrl("/petImage/" + pet.getPetId());
+            return petDTO;
+        }).collect(Collectors.toList());
+    }
     // endpoint to get breeds by type
     @GetMapping("/breeds")
     @ResponseBody
@@ -314,4 +338,6 @@ public class PetController {
         }
         return "redirect:/rescuerDashboard";
     }
+
+    
 }

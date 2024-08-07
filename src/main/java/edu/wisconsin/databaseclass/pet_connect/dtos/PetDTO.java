@@ -23,6 +23,8 @@ public class PetDTO {
     private String furLength;
     private String description;
     private String photoUrl;
+    private double latitude;
+    private double longitude;
 
     // Getters and setters
     public String getPetId() {
@@ -191,5 +193,21 @@ public class PetDTO {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 }
