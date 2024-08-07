@@ -48,8 +48,13 @@ public class CSVToDatabase implements CommandLineRunner {
             while ((values = reader.readNext()) != null) {
                 Pet pet = new Pet();
                 pet.setFieldsFromCsv(values, locationRepository, rescuerRepository, breedRepository, colorRepository);
-                pet.setLongitude(32.715736); // Default value
-                pet.setLatitude(-117.161087);  // Default value
+                
+                // Set longitude and latitude from the location entity
+                if (pet.getLocation() != null) {
+                    pet.setLongitude(pet.getLocation().getLongitude());
+                    pet.setLatitude(pet.getLocation().getLatitude());
+                }
+                
                 petRepository.save(pet);
                 logger.info("Saved pet with ID: {}", pet.getPetId());
             }

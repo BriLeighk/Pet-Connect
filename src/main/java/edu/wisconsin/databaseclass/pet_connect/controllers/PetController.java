@@ -58,9 +58,18 @@ public class PetController {
             PetDTO petDTO = new PetDTO();
             petDTO.setPetId(pet.getPetId());
             petDTO.setName(pet.getName());
-            petDTO.setLocation(pet.getLocation().getState()); // Assuming Location object has state field
-            petDTO.setLatitude(pet.getLatitude()); // Ensure Pet entity has latitude
-            petDTO.setLongitude(pet.getLongitude()); // Ensure Pet entity has longitude
+            
+            // Get location details
+            Location location = pet.getLocation();
+            if (location != null) {
+                petDTO.setLocation(location.getState()); // Assuming Location object has state field
+                // Perform minor calculation on coordinates to avoid overlap
+                double adjustedLongitude = location.getLongitude() + (Math.random() * 0.0001); // Minor adjustment
+                double adjustedLatitude = location.getLatitude() + (Math.random() * 0.0001); // Minor adjustment
+                petDTO.setLongitude(adjustedLongitude);
+                petDTO.setLatitude(adjustedLatitude);
+            }
+            
             petDTO.setPhotoUrl("/petImage/" + pet.getPetId());
             return petDTO;
         }).collect(Collectors.toList());

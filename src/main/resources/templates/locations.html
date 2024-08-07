@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="max-age=2592000">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/pets.css}"> <!-- Include pets.css for styling -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel="icon" type="image/png" th:href="@{/favicon.png}">
   <title>Pet Map</title>
   <style>
     html, body {
@@ -13,7 +17,7 @@
     }
     #map {
       height: 100%;
-    }\
+    }
     .element {
         -ms-transform: rotate(45deg); /* IE 9 */
         transform: rotate(45deg); /* Modern browsers */
@@ -23,6 +27,9 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY62yztHQf7nv2JEIwcr-_QLmatLXk4go&callback=initMap" async defer></script>
 </head>
 <body>
+  <div th:insert="~{fragments/header :: header}"></div> <!-- header fragment to display -->
+  <div th:insert="~{pets :: petModal}"></div>
+  <div th:insert="~{pets :: petModalScripts}"></div>
   <div id="map"></div>
   <script>
     let map;
@@ -55,17 +62,9 @@
             title: pet.name
           });
 
-          const content = `
-            <div class="pet-info-window">
-                <img src="${pet.photoUrl}" alt="Pet Image" style="width: 100px; height: 100px;">
-                <h3>${pet.name}</h3>
-                <p>Location: ${pet.location}</p>
-            </div>
-          `;
-
+          // Update the click listener to open the pet modal
           marker.addListener('click', () => {
-            infoWindow.setContent(content);
-            infoWindow.open(map, marker);
+            openPetModal(pet.petId); // Call the function to open the pet modal
           });
         }
       });
@@ -73,4 +72,3 @@
   </script>
 </body>
 </html>
-
