@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import edu.wisconsin.databaseclass.pet_connect.dtos.PetDTO;
 import edu.wisconsin.databaseclass.pet_connect.entities.Favorites;
@@ -88,6 +85,23 @@ public class FavoritesController {
                 return petDTO;
             }).collect(Collectors.toList());
             return new ResponseEntity<>(favoritePets, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/favorite/{petId}")
+    @ResponseBody
+    public ResponseEntity<Void> deleteFavorite(@PathVariable String petId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        try {
+            favoritesService.deleteFavorite(user.getUserId(), petId);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

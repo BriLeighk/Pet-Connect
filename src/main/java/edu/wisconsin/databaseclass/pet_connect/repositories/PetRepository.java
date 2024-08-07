@@ -16,7 +16,7 @@ public interface PetRepository extends JpaRepository<Pet, String>, JpaSpecificat
     // JpaSpecificationExecutor provides support for dynamic queries
 
     List<Pet> findByRescuer(Rescuer rescuer); // Custom query method to find pets by rescuer
-
+  
     void deleteById(@NonNull String petId); // Method to delete a pet by its ID
 
     List<Pet> findByNameContainingIgnoreCase(String name); // Method to search pets by name

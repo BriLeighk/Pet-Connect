@@ -54,7 +54,6 @@ public class CSVToDatabase implements CommandLineRunner {
                     pet.setLongitude(pet.getLocation().getLongitude());
                     pet.setLatitude(pet.getLocation().getLatitude());
                 }
-                
                 petRepository.save(pet);
                 logger.info("Saved pet with ID: {}", pet.getPetId());
             }
