@@ -256,7 +256,6 @@ public class PetController {
         pet.setFee(fee);
         pet.setFurLength(furLength);
         pet.setDescription(description); // Set description
-        pet.setPhotoAmount(photos != null ? photos.length : 0); // Set photo amount based on uploaded photos
         Location location = petService.getLocationById(locationId);
         pet.setLocation(location);
         Rescuer rescuer = petService.getRescuerById(rescuerId);

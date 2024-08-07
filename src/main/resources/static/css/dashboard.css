@@ -42,9 +42,6 @@ a {
 }
 
 
-
-
-
 .profile-card img {
     border-radius: 50%;
     width: 100px;
@@ -151,6 +148,10 @@ form input[type="text"], form input[type="number"], select, input[type="file"], 
     padding: 4px 5px; /* Add some padding for better appearance */
     margin-left: 70px; /* Add space between input and label */
     transition: box-shadow 0.6s ease-in-out;
+}
+
+#username {
+    margin-left: 0;
 }
 
 select {

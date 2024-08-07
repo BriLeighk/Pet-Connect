@@ -9,7 +9,7 @@ body {
     margin: 0;
     padding: 0;
     color: #fff;
-    margin-bottom: 100px;
+
 }
 
 /* Main header */
@@ -180,4 +180,15 @@ button.dropbtn {
 .favorites-popup ul li {
     padding: 10px;
     border-bottom: 1px solid #ddd;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #b08968; /* Match header background */
+    color: #fff; /* Text color */
+    position: relative; /* Ensure it stays at the bottom */
+    bottom: 0;
+    width: 100%;
+    font-size: 12px;
 }
