@@ -29,11 +29,9 @@
             <div class="pet-cards-container">
                 <div th:each="pet : ${pets}" class="pet-card" 
                      th:data-pet-id="${pet.petId}" 
-                     th:data-type="${pet.type == 1 ? 'dog' : pet.type == 2 ? 'cat' : 'mixed'}" 
+                     th:data-type="${pet.type == 1 ? 'cat' : 'dog'}" 
                      th:data-breed="${breedNames[pet.petId]}">
-                    <div th:with="imageSrc=${pet.photos != null ? '/petImage/' + pet.petId : (pet.type == 1 ? (pet.gender == 3 ? '/images/dog-group-placeholder.png' : '/images/dog-placeholder.png') : (pet.type == 2 ? (pet.gender == 3 ? '/images/cat-group-placeholder.png' : '/images/cat-placeholder.png') : '/images/pet-placeholder.png'))}">
-                        <img th:src="${imageSrc}" alt="Pet Image" class="pet-image">
-                    </div>
+                    <img th:src="@{/petImage/{petId}(petId=${pet.petId})}" alt="Pet Image" class="pet-image">
                     <h3 th:text="${pet.name}">Pet Name</h3>
                     <p th:text="'Adoption Status: ' + ${pet.adoptionStatus}">Adoption Status</p>
                     <p th:text="'Fee: $' + ${pet.fee}">Fee</p>
@@ -139,7 +137,7 @@
                 })
                 .then(pet => {
                     document.getElementById('modalPetName').innerHTML = pet.name;
-                    document.getElementById('modalPetImage').src = pet.photos ? '/petImage/' + pet.petId : '/images/pet-placeholder.png';
+                    document.getElementById('modalPetImage').src = pet.photoUrl;
                     document.getElementById('modalPetAdoptionStatus').innerHTML = 'Adoption Status: <span class="modal-value">' + pet.adoptionStatus + '</span>';
                     document.getElementById('modalPetFee').innerHTML = 'Fee: <span class="modal-value">$' + pet.fee + '</span>';
                     document.getElementById('modalPetType').innerHTML = 'Type: <span class="modal-value">' + pet.type + '</span>';

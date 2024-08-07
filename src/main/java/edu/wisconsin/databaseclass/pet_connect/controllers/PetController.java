@@ -1,6 +1,8 @@
 package edu.wisconsin.databaseclass.pet_connect.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,9 @@ public class PetController {
     @Autowired
     private PetService petService;
 
+    @Autowired
+    private ResourceLoader resourceLoader;
+
     private static final Logger logger = LoggerFactory.getLogger(PetController.class);
 
     // endpoint to show add new pet form
@@ -60,42 +65,42 @@ public class PetController {
 
     // endpoint to get pet image
     @GetMapping("/petImage/{petId}")
-@ResponseBody
-public ResponseEntity<byte[]> getPetImage(@PathVariable String petId) {
-    Pet pet = petService.getPetById(petId);
-    if (pet != null && pet.getPhotos() != null) {
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(pet.getPhotos());
-    } else {
-        try {
-            String placeholderPath;
-            if (pet != null) {
-                if (pet.getType() == 1) { // Dog
-                    if (pet.getGender() == 3) {
-                        placeholderPath = "src/main/resources/static/images/dog-group-placeholder.png";
+    @ResponseBody
+    public ResponseEntity<byte[]> getPetImage(@PathVariable String petId) {
+        Pet pet = petService.getPetById(petId);
+        if (pet != null && pet.getPhotos() != null) {
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(pet.getPhotos());
+        } else {
+            try {
+                String placeholderPath;
+                if (pet != null) {
+                    if (pet.getType() == 1) { // Dog
+                        if (pet.getGender() == 3) {
+                            placeholderPath = "classpath:/static/images/dog-group-placeholder.png";
+                        } else {
+                            placeholderPath = "classpath:/static/images/dog-placeholder.png";
+                        }
+                    } else if (pet.getType() == 2) { // Cat
+                        if (pet.getGender() == 3) {
+                            placeholderPath = "classpath:/static/images/cat-group-placeholder.png";
+                        } else {
+                            placeholderPath = "classpath:/static/images/cat-placeholder.png";
+                        }
                     } else {
-                        placeholderPath = "src/main/resources/static/images/dog-placeholder.png";
+                        placeholderPath = "classpath:/static/images/pet-placeholder.png";
                     }
-                } else if (pet.getType() == 2) { // Cat
-                    if (pet.getGender() == 3) {
-                        placeholderPath = "src/main/resources/static/images/cat-group-placeholder.png";
-                    } else {
-                        placeholderPath = "src/main/resources/static/images/cat-placeholder.png";
-                    }
+                    Resource resource = resourceLoader.getResource(placeholderPath);
+                    byte[] placeholderImage = Files.readAllBytes(resource.getFile().toPath());
+                    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(placeholderImage);
                 } else {
-                    placeholderPath = "src/main/resources/static/images/pet-placeholder.png";
+                    return ResponseEntity.notFound().build();
                 }
-            } else {
-                placeholderPath = "src/main/resources/static/images/pet-placeholder.png";
+            } catch (IOException e) {
+                logger.error("Error reading placeholder image", e);
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
-            logger.info("Using placeholder image path: " + placeholderPath);
-            byte[] placeholderImage = Files.readAllBytes(Paths.get(placeholderPath));
-            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(placeholderImage);
-        } catch (IOException e) {
-            logger.error("Error reading placeholder image", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-}
 
     // endpoint to get pet by id
     @GetMapping("/pet/{petId}")
