@@ -29,7 +29,7 @@
             <div class="pet-cards-container">
                 <div th:each="pet : ${pets}" class="pet-card" 
                      th:data-pet-id="${pet.petId}" 
-                     th:data-type="${pet.type == 1 ? 'cat' : 'dog'}" 
+                     th:data-type="${pet.type == 1 ? 'dog' : 'cat'}" 
                      th:data-breed="${breedNames[pet.petId]}">
                     <img th:src="@{/petImage/{petId}(petId=${pet.petId})}" alt="Pet Image" class="pet-image">
                     <h3 th:text="${pet.name}">Pet Name</h3>

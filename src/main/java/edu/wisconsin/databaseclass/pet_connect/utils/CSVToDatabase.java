@@ -13,6 +13,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
 import edu.wisconsin.databaseclass.pet_connect.entities.Pet;
+import edu.wisconsin.databaseclass.pet_connect.entities.Rescuer;
 import edu.wisconsin.databaseclass.pet_connect.repositories.BreedRepository;
 import edu.wisconsin.databaseclass.pet_connect.repositories.ColorRepository;
 import edu.wisconsin.databaseclass.pet_connect.repositories.LocationRepository;
@@ -47,6 +48,24 @@ public class CSVToDatabase implements CommandLineRunner {
             reader.readNext(); // Skip header
             while ((values = reader.readNext()) != null) {
                 Pet pet = new Pet();
+                
+                // Check and modify breed1 if it is 0
+                int breed1 = Integer.parseInt(values[3]); // breed1 is at index 3
+                if (breed1 == 0) {
+                    breed1 = 307; // Change breed1 to 307 if it is 0
+                }
+                values[3] = String.valueOf(breed1); // Update the value in the array
+                
+                // Check rescuer ID
+                String rescuerId = values[17]; // rescuer_ID is at index 17
+                if (!rescuerRepository.existsById(rescuerId)) {
+                    // add the rescuer to the database if it doesn't exist
+                    Rescuer newRescuer = new Rescuer();
+                    newRescuer.setRescuerId(rescuerId);
+                    // Set other fields if necessary
+                    rescuerRepository.save(newRescuer);
+                }
+                
                 pet.setFieldsFromCsv(values, locationRepository, rescuerRepository, breedRepository, colorRepository);
                 
                 // Set longitude and latitude from the location entity
