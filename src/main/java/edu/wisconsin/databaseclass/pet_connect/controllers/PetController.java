@@ -39,8 +39,6 @@ public class PetController {
     @Autowired
     private ResourceLoader resourceLoader;
 
-    private static final Logger logger = LoggerFactory.getLogger(PetController.class);
-
     // endpoint to show add new pet form
     @GetMapping("/addNewPet")
     public String showAddNewPetForm(Model model) {
@@ -120,7 +118,7 @@ public class PetController {
                     return ResponseEntity.notFound().build();
                 }
             } catch (IOException e) {
-                logger.error("Error reading placeholder image", e);
+                
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         }
