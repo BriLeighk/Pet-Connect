@@ -1,6 +1,5 @@
 ﻿# Pet-Connect
-
- Pet Connect is a web-based pet adoption platform designed to streamline the adoption process for rescuers and potential adopters.
+Web-based pet adoption platform designed to streamline the adoption process for rescuers and potential adopters.
 
 ## Project Description
 Pet Connect is a comprehensive platform that allows users to browse pet profiles, save favorites, and initiate the adoption process through a build-in messaging system. Rescuers can manage pet profiles, respond to inquiries, and more.
@@ -13,27 +12,11 @@ Pet Connect is a comprehensive platform that allows users to browse pet profiles
 - Add, update, and manage pet profiles as a rescuer
 - View map of pet locations through Google Maps integration
 
-## Technology Stack
-
-### Frontend
-- HTML, CSS
-- Thymeleaf
-
-### Backend
-- Java
-- Spring Boot
-- Spring Web
-- Spring Data JPA
-- Spring Security
-
-### Database
-- MySQL
-- Hibernate
-
-### Other Tools
-- Maven
-- BCrypt
-- Google Maps API
+## Tech Stack
+- **Frontend**: HTML, CSS, Thymeleaf
+- **Backend**: Java, Spring Boot, Spring Web, Spring Data JPA, Spring Security
+- **Database**: MySQL, Hibernate
+- **Other Tools**: Maven, BCrypt, Google Maps API
 
 ## Setup and Installation
 
